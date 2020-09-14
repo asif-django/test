@@ -1,0 +1,112 @@
+{% extends 'index.html' %}
+{% load static %}
+{# Load the tag library #}
+{% load bootstrap4 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+
+{% bootstrap_javascript jquery='full' %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block head %}
+<div class="col-sm-6">
+    <h1 class="m-0 text-dark">Goods Receiver</h1>
+  </div>
+  <div class="col-sm-6">
+    <ol class="breadcrumb float-sm-right">
+      <li class="breadcrumb-item"><a href="{% url 'goods_view' %}"><button class = "btn waves-effect btn-secondary btn-md " >View</button></a></li>
+    </ol>
+  </div>
+{% endblock %}
+ 
+{% block content %}
+<form method="POST">
+{% csrf_token %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+            <h3 class="card-title">Associated Purchase Orders</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-2">
+            <div class="row">
+                <div class="col-3">{% bootstrap_field goods_form.grn_type  %}</div>
+                <div class="col-3">{% bootstrap_field goods_form.received_store  %}</div>
+                <div class="col-3">{% bootstrap_field goods_form.vendor_supplier  %}</div>
+                <div class="col-3">{% bootstrap_field goods_form.invoice_no  %}</div>
+                <div class="col-3">{% bootstrap_field goods_form.received_date  %}</div>
+                <div class="col-3">{% bootstrap_field goods_form.received_by  %}</div>
+                <div class="col-3">{% bootstrap_field goods_form.invoice_date  %}</div>             
+                <div class="col-3">{% bootstrap_field goods_form.invoice_amount  %}</div>
+            </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="card">
+            <!-- /.card-header -->
+            <div class="card-body table-responsive pr-2 pl-2 pb-2 pt-0" style="height: 400px;">
+            {{ medi_form.management_form }}
+            <table class="table table-head-fixed table-striped table-md" >
+                <thead>
+                <tr>
+                    <th>S.NO</th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Free Quantity</th>
+                    <th>Batch ID</th>
+                    <th>Expiry Date</th>
+                    <th>Sale Price</th>
+                    <th>Cost Price</th>
+                    <th>GST(%)</th>
+                    <th>Sub-Total</th>
+                </tr>
+                </thead>
+                <tbody>                
+                {% for form in medi_form %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{% bootstrap_field form.item_name show_label=false %}</td>
+                    <td>{% bootstrap_field form.quantity show_label=false %}</td>
+                    <td>{% bootstrap_field form.free_quantity show_label=false %}</td>
+                    <td>{% bootstrap_field form.batch_id show_label=false %}</td>
+                    <td>{% bootstrap_field form.expiry_date show_label=false %}</td>
+                    <td>{% bootstrap_field form.sale_price show_label=false %}</td>
+                    <td>{% bootstrap_field form.cost_price show_label=false %}</td>
+                    <td>{% bootstrap_field form.gst show_label=false %}</td>
+                    <td>{% bootstrap_field form.sub_total show_label=false %}</td>
+                </tr>
+                {% endfor %}                
+                </tbody>
+            </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <div class="col-md-10">    
+        <div class="card-body p-1">
+            <div class="row">
+                <div class="col-3">{% bootstrap_field goods_form.gst_amount  %}</div>
+                <div class="col-3">{% bootstrap_field goods_form.remarks  %}</div>
+                <div class="col-3">{% bootstrap_field goods_form.net_amount  %}</div>
+                <div class="col-3">{% bootstrap_field goods_form.round_off  %}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10" style="text-align: end;"><br>
+        <div class="fixed-action-btn pb-4 justify-content-center ">
+            <button type="submit" class="btn btn-primary"> Submit</button>
+            <a href="#" class="btn btn-danger">Cancel</a>
+        </div>
+    </div>
+</div>    
+</form>
+
+
+
+{% endblock %}

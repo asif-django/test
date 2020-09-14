@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200&display=swap" rel="stylesheet">
+</head>
+<body>   
+  <nav class="navbar">
+    <div class="logo">  
+      <a href="">Shantha Pharma</a>
+    </div>
+    <div class="menu">
+      <ul>
+        <li><a href="" class="active">Home</a></li>
+        <li><a href="" >Departmental</a></li>
+        <li><a href="" >Inventory</a></li>
+        <li><a href="" >Reports</a></li>
+      </ul>
+
+
+    </div> 
+    <div class="contact_btn">  
+      <a href=""> contact</a>
+
+    </div> 
+
+  </nav>
+  <nav class="main_navbar">
+    <div class="menu">
+      <ul>
+        <li><a href="">Sales</a></li>
+        <li><a href="">Goods</a></li>
+        <li><a href="">Reports</a></li>
+      </ul>
+
+    </div>
+  </nav>
+  <section class="content">
+    {% block content %}
+    {% endblock %}
+  </section>
+  <footer>
+    <h6>Copy rights</h6>
+  </footer>
+    
+</body>
+</html>

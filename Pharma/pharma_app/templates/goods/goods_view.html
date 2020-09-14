@@ -1,0 +1,97 @@
+{% extends 'index.html' %}
+{% load static %}
+{# Load the tag library #}
+{% load bootstrap4 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+
+{% bootstrap_javascript jquery='full' %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+
+{% block head %}
+<div class="col-sm-6">
+  <h1 class="m-0 text-dark">Goods</h1>
+</div>
+<div class="col-sm-6">
+  <ol class="breadcrumb float-sm-right">
+    <li class="breadcrumb-item"><a href="{% url 'goods_create' %}"><button class = "btn waves-effect btn-warning btn-md " >Create</button></a></li>
+  </ol>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row p-1">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <form method="GET">
+                  {{ myfilter.form }}
+                  <button type="submit" class="btn btn-success"> Search </button>
+                </form>
+              </div>
+            </div>
+          </div> 
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+  <div class="col-md-12">
+      <div class="card">
+          <!-- /.card-header -->
+          <div class="card-body table-responsive p-1 myfontsize">
+            <table class="table table-bordered table-md table-head-fixed">
+              <thead>
+                <tr>
+                  <th>S.NO</th>
+                  <th>Manufacture Name</th>
+                  <th>GRN_Type</th>
+                  <th>Received Store</th>
+                  <th>Invoice No</th>
+                  <th>Received Date</th>
+                  <th>Received By</th>
+                  <th>Invoice Date</th>
+                  <th>Invoice Amount</th>
+                  <th>GST Amount</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for form in goods_form %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ form.vendor_supplier }}</td>
+                  <td>{{ form.grn_type }}</td>
+                  <td>{{ form.received_store }}</td>
+                  <td>{{ form.invoice_no }}</td>
+                  <td>{{ form.received_date }}</td>
+                  <td>{{ form.received_by }}</td>
+                  <td>{{ form.invoice_date }}</td>
+                  <td>{{ form.invoice_amount }}</td>
+                  <td>{{ form.gst_amount }}</td>
+                  <td><button OnClick="showSales(this)" value="{% url 'goods_itme_view' form.id %}" class = "btn btn-block btn-primary btn-sm" >View</button></td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+  </div>
+    <!-- /.col-md-6 -->
+    <div class="col-md-7 hide" id="showSalesView">
+      
+  </div>
+</div>
+
+{% endblock %}

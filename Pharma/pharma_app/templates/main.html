@@ -1,0 +1,134 @@
+
+
+{% if sale_item_form %}
+<div class="card">
+  <div class="card-body p-1 table-responsive">
+    <table class="table table-bordered table-md table-haed-fixed">
+      <thead>
+        <tr>
+          <th>S.NO</th>
+          <th>Item_Name</th>
+          <th>Quantity</th>
+          <th>Batch_ID</th>
+          <th>Unit_Price</th>
+          <th>Discount</th>
+          <th>GST(%)</th>
+          <th>Sub_Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for form in sale_item_form %}
+        <tr>
+          <td>{{ form.id }}</td>
+          <td>{{ form.item_name }}</td>
+          <td>{{ form.quantity }}</td>
+          <td>{{ form.batch_id }}</td>
+          <td>{{ form.unit_price }}</td>
+          <td>{{ form.discount }}</td>
+          <td>{{ form.gst }}</td>
+          <td>{{ form.sub_total }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="card-body" style="text-align: end;">
+    <a id="show_sale" href="" class="btn btn-sm waves-effect">
+      <i class = "btn btn-block btn-success btn-sm" >Print</i>
+    </a>
+    <a id="show_sale" href="" class="btn btn-sm waves-effect">
+      <i class = "btn btn-block btn-primary btn-sm" >Edit</i>
+    </a>
+    <button id="close"  class = "btn waves-effect btn-danger btn-sm " >Close</button>
+  </div>
+</div>
+{% elif medi_form %}
+<div class="card">
+  <!-- /.card-header -->
+  <div class="card-body p-1 table-responsive myfontsize">
+    <table class="table table-bordered table-md table-haed-fixed">
+      <thead>
+        <tr>
+          <th>S.NO</th>
+          <th>Item Name</th>
+          <th>Quantity</th>
+          <th>Free Quantity</th>
+          <th>Batch ID</th>
+          <th>Expiry Date</th>
+          <th>Sale Price</th>
+          <th>Cost Price</th>
+          <th>GST(%)</th>
+          <th>Sub-Total</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for form in medi_form %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ form.item_name }}</td>
+          <td>{{ form.quantity }}</td>
+          <td>{{ form.free_quantity }}</td>
+          <td>{{ form.batch_id }}</td>
+          <td>{{ form.expiry_date }}</td>
+          <td>{{ form.sale_price }}</td>
+          <td>{{ form.cost_price }}</td>
+          <td>{{ form.gst }}</td>
+          <td>{{ form.sub_total }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="card-body" style="text-align: end;">
+    <a id="show_sale" href="" class="btn btn-sm waves-effect">
+      <a href="" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+    </a>
+    <a id="show_sale" href="" class="btn btn-sm waves-effect">
+      <i class = "btn btn-block btn-primary btn-sm" >Edit</i>
+    </a>
+    <button id="close"  class = "btn waves-effect btn-danger btn-sm " >Close</button>
+  </div>
+  <!-- /.card-body -->
+</div>
+{% else %}
+<div class="card">
+  <!-- /.card-header -->
+  <div class="card-body p-1 table-responsive myfontsize">
+    <table class="table table-bordered table-md table-haed-fixed">
+      <thead>
+        <tr>
+          <th>S.NO</th>
+          <th>Item Name</th>
+          <th>Quantity</th>
+          <th>Free Quantity</th>
+          <th>Batch ID</th>
+          <th>Expiry Date</th>
+          <th>Sale Price</th>
+          <th>Cost Price</th>
+          <th>GST(%)</th>
+          <th>Sub-Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ None }}</td>
+          <td>{{ None }}</td>
+          <td>{{ None }}</td>
+          <td>{{ None }}</td>
+          <td>{{ None }}</td>
+          <td>{{ None }}</td>
+          <td>{{ None }}</td>
+          <td>{{ None }}</td>
+          <td>{{ None }}</td>
+          <td>{{ None }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-body" style="text-align: end;">
+    <button id="close"  class = "btn waves-effect btn-danger btn-sm " >Close</button>
+  </div>
+  <!-- /.card-body -->
+</div>
+
+{% endif%}

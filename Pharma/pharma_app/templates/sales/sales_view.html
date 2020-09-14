@@ -1,0 +1,110 @@
+{% extends 'index.html' %}
+{% load static %}
+{# Load the tag library #}
+{% load bootstrap4 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+
+{% bootstrap_javascript jquery='full' %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block head %}
+<div class="col-sm-6">
+    <h1 class="m-0 text-dark">OP Sales View</h1>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row p-1">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <form method="GET">
+                  {{ myfilter.form }}
+                  <button type="submit" class="btn btn-success"> Search </button>
+                </form>
+              </div>
+            </div>
+          </div> 
+        </div>
+        <div class="row p-1">
+          <div class="col-md-3">Total Bills:    <b class="text-success">{{ bills }}</b> </div>
+          <div class="col-md-3">Total Billed:   <b class="text-success">{{ total }} </b></div>
+          <div class="col-md-3">Total Collection:   <b class="text-success">{{ total }}</b> </div>
+          <div class="col-md-3">Current Due: <b class="text-danger"> 0.0 </b></div>
+        </div>
+        <div class="row p-1">
+          <div class="col-md-3">Cash:   <b class="text-success">{{ cash }}</b> </div>
+          <div class="col-md-3">Card:   <b class="text-success">{{ card }}</b> </div>
+          <div class="col-md-3">UPI:    <b class="text-success">{{ upi }}</b> </div>
+          <div class="col-md-3">Others:   <b class="text-success">{{ others }}</b> </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+  <div class="col-sm-12">
+      <div class="card ">
+          <!-- /.card-header -->
+          <div class="card-body p-3 myfontsize">
+            <table class="table table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th>S.NO</th>
+                  <th>Bill_No.</th>
+                  <th>Date</th>
+                  <th>Patien_Name</th>
+                  <th>Mobile_Number</th>
+                  <th>Referred_By</th>
+                  <th>Payment_Type</th>
+                  <th>GST_Amount</th>
+                  <th>Net_Amount</th>
+                  <th>Total_Amount</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for form in sale_form %}              
+                <tr>                                
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ form.bill_no }}</td>
+                  <td>{{ form.created_on }}</td>
+                  <td>{{ form.patient }}</td>
+                  <td>{{ form.phone }}</td>
+                  <td>{{ form.referred_by }}</td>
+                  <td>{{ form.payment_type }}</td>
+                  <td>{{ form.total_vat }}</td>
+                  <td>{{ form.net_amount }}</td>
+                  <td>{{ form.total_amount }}</td>
+                  <td>
+                    <!-- <a href="{% url 'sales_view' %}" class="btn btn-sm waves-effect">
+                      <i class="btn btn-block btn-success btn-sm">Edit</i>
+                    </a>                                                 -->
+                    
+                    <button OnClick="showSales(this)" value="{% url 'sales_item_view' form.id %}" class = "btn btn-block btn-primary btn-sm" >View</button>
+                    <!-- <a value="{% url 'sales_delete' %}" class="btn btn-sm waves-effect swalDefaultSuccess">
+                      <i class = "btn btn-block btn-danger btn-sm" >Delete</i>
+                    </a> -->
+                  </td>               
+                </tr>            
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+      </div>
+  </div>
+  <div class="col-md-7 hide" id="showSalesView">
+  </div>
+</div>
+
+{% endblock %}
