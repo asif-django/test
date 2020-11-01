@@ -1,50 +1,40 @@
 {% extends 'index.html' %}
-{% load static %}
-{# Load the tag library #}
 {% load bootstrap4 %}
 
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-
-{% bootstrap_javascript jquery='full' %}
-
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
-
 {% block head %}
-<div class="col-sm-6">
-    <h1 class="m-0 text-dark">Sales</h1>
+<div class="col-sm-12 text-center">
+  <section class="left-sec">
+    <button id="but2b">Billing Section</button>
+  </section>
   </div>
 {% endblock %}
  
 {% block content %}
-<form method="POST">
+<form method="POST" id="formreset">
 {% csrf_token %}
 <div class="row justify-content-center">
+    
     <div class="col-md-8 pt-2" style="background-color: #1f2d3d40;"> 
-        <div class="card">
+        <div class="card ">
             <div class="col-md-12">
-                <div class="card card-warning mt-2">
-                    <div class="card-header">
-                    <h3 class="card-title">Sales</h3>
-                    </div>
+                <div class="card border border-warning mt-2">
                     <!-- /.card-header -->
                     <div class="card-body p-1">
                     <div class="row">
-                        <div class="col-4">{% bootstrap_field sale_form.store  %}</div>
-                        <div class="col-4">{% bootstrap_field sale_form.patient  %}</div>
-                        <div class="col-4">{% bootstrap_field sale_form.phone  %}</div>
-                        <div class="col-4">{% bootstrap_field sale_form.referred_by  %}</div>
-                        <div class="col-4">{% bootstrap_field sale_form.payment_type  %}</div>
+                        <div class="col-4">{% bootstrap_field sale_form.store set_placeholder=False  %}</div>
+                        <div class="col-4">{% bootstrap_field sale_form.patient set_placeholder=False %}</div>
+                        <div class="col-4">{% bootstrap_field sale_form.phone set_placeholder=False %}</div>
+                        <div class="col-4">{% bootstrap_field sale_form.referred_by set_placeholder=False %}</div>
+                        <div class="col-4">{% bootstrap_field sale_form.payment_type set_placeholder=False %}</div>
                     </div>
                     </div>
                     <!-- /.card-body -->
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="card card-outline card-primary">
+                <div class="card border border-info">
                     <!-- /.card-header -->
-                    <div class="card-body table-responsive pr-2 pl-2 pb-2 pt-0" style="height: 250px;">
+                    <div class="card-body table-responsive pr-2 pl-2 pb-2 pt-0" style="max-height: 260px;">
                     {{ sale_item_form.management_form }}
                     <table class="table table-striped table-head-fixed table-sm">
                         <thead>
@@ -54,6 +44,7 @@
                             <th>Quantity</th>
                             <th>Batch ID</th>
                             <th>Unit Price</th>
+                            <th>Expiry Date</th>
                             <th>Discount</th>
                             <th>GST(%)</th>
                             <th>Sub-Total</th>
@@ -63,13 +54,14 @@
                         {% for form in sale_item_form %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td>{% bootstrap_field form.item_name show_label=false %}</td>
-                            <td>{% bootstrap_field form.quantity show_label=false %}</td>
-                            <td>{% bootstrap_field form.batch_id show_label=false %}</td>
-                            <td>{% bootstrap_field form.unit_price show_label=false %}</td>
-                            <td>{% bootstrap_field form.discount show_label=false %}</td>
-                            <td>{% bootstrap_field form.gst show_label=false %}</td>
-                            <td>{% bootstrap_field form.sub_total show_label=false %}</td>
+                            <td>{% bootstrap_field form.item_name show_label=false set_placeholder=False %}</td>
+                            <td>{% bootstrap_field form.quantity show_label=false set_placeholder=False %}</td>
+                            <td>{% bootstrap_field form.batch_id show_label=false set_placeholder=False %}</td>
+                            <td>{% bootstrap_field form.unit_price show_label=false set_placeholder=False %}</td>
+                            <td>{% bootstrap_field form.expiry_date show_label=false set_placeholder=False %}</td>
+                            <td>{% bootstrap_field form.discount show_label=false set_placeholder=False %}</td>
+                            <td>{% bootstrap_field form.gst show_label=false set_placeholder=False %}</td>
+                            <td>{% bootstrap_field form.sub_total show_label=false set_placeholder=False %}</td>
                         </tr>
                         {% endfor %}                
                         </tbody>
@@ -81,12 +73,12 @@
             <div class="col-md-12">    
                 <div class="card-body p-1">
                     <div class="row">
-                        <div class="col-3">{% bootstrap_field sale_form.total_vat  %}</div>
-                        <div class="col-3">{% bootstrap_field sale_form.net_amount %}</div>
-                        <div class="col-3">{% bootstrap_field sale_form.total_amount %}</div>
+                        <div class="col-3">{% bootstrap_field sale_form.total_vat  set_placeholder=False %}</div>
+                        <div class="col-3">{% bootstrap_field sale_form.net_amount set_placeholder=False %}</div>
+                        <div class="col-3">{% bootstrap_field sale_form.total_amount set_placeholder=False %}</div>
                         <div class="col-3"><div class="fixed-action-btn pb-4" style="text-align: end;"><br>
-                            <button type="submit" class="btn btn-success"> Save </button>
-                            <a href="#" class="btn btn-danger">Cancel</a>
+                            <button onclick="PopItUp() type="submit" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter"> Save & <i class="fas fa-print"></i></button>
+                            <a onclick="FormReset()" class="btn btn-danger">Cancel</a>
                         </div></div>
                     </div>
                 </div>
@@ -94,148 +86,69 @@
         </div>
 
     </div>
-    
+       
 </div>    
 </form>
+
 {% endblock %}
 
 {% block javascript %}
-<script>  
-    // $( function() {  
-    //   $("input").autocomplete({
-    //     source: "{% url 'autocomplete_sale' %}",
-    //   }); 
-    // });
-  
-  
-    $("input").change(function(){
-    var id = $(this).val()
-    var url = "/fill_data/"
-    $.ajax({
-    url: url,
-    type: 'GET',
-    success: function (data) {
-        console.log(data)
-        console.log(data[0]["fields"]["quantity"])
-        $(this).children().val(data[0]["fields"]["quantity"]);
-    }
-    });
-});
-    
-  </script>
+
   <script>
-    //var inp = document.getElementById('id_l_from')
-    function autocomplet(inp, arr) {
-      /*the autocomplete function takes two arguments,
-      the text field element and an array of possible autocompleted values:*/
-      var currentFocus;
-      /*execute a function when someone writes in the text field:*/
-      inp.addEventListener("input", function(e) {
-          var a, b, i, val = this.value;
-          /*close any already open lists of autocompleted values*/
-          closeAllLists();
-          if (!val) { return false;}
-          currentFocus = -1;
-          /*create a DIV element that will contain the items (values):*/
-          a = document.createElement("DIV");
-          a.setAttribute("id", this.id + "autocomplete-list");
-          a.setAttribute("class", "autocomplete-items");
-          /*append the DIV element as a child of the autocomplete container:*/
-          this.parentNode.appendChild(a);
-          /*for each item in the array...*/
-          for (i = 0; i < arr.length; i++) {
-            /*check if the item starts with the same letters as the text field value:*/
-            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-              /*create a DIV element for each matching element:*/
-              b = document.createElement("DIV");
-              /*make the matching letters bold:*/
-              b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-              b.innerHTML += arr[i].substr(val.length);
-              /*insert a input field that will hold the current array item's value:*/
-              b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-              /*execute a function when someone clicks on the item value (DIV element):*/
-              b.addEventListener("click", function(e) {
-                  /*insert the value for the autocomplete text field:*/
-                  inp.value = this.getElementsByTagName("input")[0].value;
-                  /*close the list of autocompleted values,
-                  (or any other open lists of autocompleted values:*/
-                  closeAllLists();
-              });
-              a.appendChild(b);
-            }
-          }
-      });
-      /*execute a function presses a key on the keyboard:*/
-      inp.addEventListener("keydown", function(e) {
-          var x = document.getElementById(this.id + "autocomplete-list");
-          if (x) x = x.getElementsByTagName("div");
-          if (e.keyCode == 40) {
-            /*If the arrow DOWN key is pressed,
-            increase the currentFocus variable:*/
-            currentFocus++;
-            /*and and make the current item more visible:*/
-            addActive(x);
-          } else if (e.keyCode == 38) { //up
-            /*If the arrow UP key is pressed,
-            decrease the currentFocus variable:*/
-            currentFocus--;
-            /*and and make the current item more visible:*/
-            addActive(x);
-          } else if (e.keyCode == 13) {
-            /*If the ENTER key is pressed, prevent the form from being submitted,*/
-            e.preventDefault();
-            if (currentFocus > -1) {
-              /*and simulate a click on the "active" item:*/
-              if (x) x[currentFocus].click();
-            }
-          }
-      });
-      function addActive(x) {
-        /*a function to classify an item as "active":*/
-        if (!x) return false;
-        /*start by removing the "active" class on all items:*/
-        removeActive(x);
-        if (currentFocus >= x.length) currentFocus = 0;
-        if (currentFocus < 0) currentFocus = (x.length - 1);
-        /*add class "autocomplete-active":*/
-        x[currentFocus].classList.add("autocomplete-active");
-      }
-      function removeActive(x) {
-        /*a function to remove the "active" class from all autocomplete items:*/
-        for (var i = 0; i < x.length; i++) {
-          x[i].classList.remove("autocomplete-active");
-        }
-      }
-      function closeAllLists(elmnt) {
-        /*close all autocomplete lists in the document,
-        except the one passed as an argument:*/
-        var x = document.getElementsByClassName("autocomplete-items");
-        for (var i = 0; i < x.length; i++) {
-          if (elmnt != x[i] && elmnt != inp) {
-            x[i].parentNode.removeChild(x[i]);
-            
-          }
-        }
-      }
-      /*execute a function when someone clicks in the document:*/
-      document.addEventListener("click", function (e) {
-          closeAllLists(e.target);
-      });
+<!--  $(document).keypress(-->
+<!--  function(event){-->
+<!--    if (event.which == '13') {-->
+<!--      event.preventDefault();-->
+<!--    }-->
+<!--});-->
+$(document).keydown(function(e) {
+
+  // Set self as the current item in focus
+  var self = $(':focus'),
+      // Set the form by the current item in focus
+      form = self.parents('form:eq(0)'),
+      focusable;
+
+  // Array of Indexable/Tab-able items
+  focusable = form.find('input,a,select,button,textarea').filter(':visible');
+
+  function enterKey(){
+    if (e.which === 13 && !self.is('textarea')) { // [Enter] key
+
+      // If not a regular hyperlink/button/textarea
+      if ($.inArray(self, focusable) && (!self.is('a')) && (!self.is('button'))){
+        // Then prevent the default [Enter] key behaviour from submitting the form
+        e.preventDefault();
+      } // Otherwise follow the link/button as by design, or put new line in textarea
+
+      // Focus on the next item (either previous or next depending on shift)
+      focusable.eq(focusable.index(self) + (e.shiftKey ? -1 : 1)).focus();
+
+      return false;
     }
-    
-    /*An array containing all the country names in the world:*/
-    var url = "{% url 'take_medicion' %}"
-    $.ajax(
-        {
-          type:"GET",
-          url: url,           
-        success: function(data){
-            var medicion = data.split(',')
-          autocomplet(document.getElementById('id_sale_items_set-0-item_name'), medicion);
-        //   autocomplet(document.getElementById('id_l_to'), city);
-        //   autocomplet(document.getElementById('id_ap_pic_add'), city);
-        //   autocomplet(document.getElementById('id_os_from'), city);                        
-        }
-      });
+  }
+  // We need to capture the [Shift] key and check the [Enter] key either way.
+  if (e.shiftKey) { enterKey() } else { enterKey() }
+});
+  function FormReset(){
+    $("#formreset")[0].reset()
+  }
+
+  $('#myclose').click(function(){
+    $('#printpopup').removeClass('show').addClass('hide')
+    })
+
+  $(document).ready(function(){
+    var id = "{{ url }}"
+    if (id){
+    new_window=window.open(id,'','height=550,width=900,left=400, top=200, location=0, toolbar=no');
+    if (window.focus) {new_window.focus()}
+    return false;
+    }
+   })
+
   </script>
+
   {% endblock %}
+
+

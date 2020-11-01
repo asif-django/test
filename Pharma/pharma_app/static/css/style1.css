@@ -1,6 +1,10 @@
 .content-wrapper{
-    background-color: #08AEEA;
-    background-image: linear-gradient(0deg, #2AF598 0%, #08AEEA 100%);
+    /* background-color: #08AEEA;
+    background-image: linear-gradient(0deg, #2AF598 0%, #08AEEA 100%); */
+    background-image: url("../dist/img/bg3.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
 
 }
 
@@ -19,15 +23,86 @@
 
 } */
 
-.contact_btn{
-    background-color: #36caff;
-    color: white !important;
-    padding: 12px 26px;
-    font-weight: 500;
-    text-transform: capitalize;
-    border: 1px solid transparent;
+contact_btn{
+    padding: 10px 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #fff;
+    border: none;
+    background-image: linear-gradient( to right, #649bff, #0070fa, #649bff);
+    border-radius: 10px;
 }
 
 .contact_btn:hover{
     border: 1px solid #2AF598;
+}
+
+main{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+
+}
+main .left-sec{
+    padding-left: 100px;
+}
+.left-sec h2{
+    font-size: 20px;
+    text-transform: capitalize;
+    font-weight: lighter;
+    margin-top: 100px;
+
+}
+
+.left-sec h1{
+    font-size: 55px;
+    text-transform: capitalize;
+    font-weight: 700;
+    margin: 12px, 0;
+}
+
+.left-sec p{
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.left-sec button{
+    padding: 15px 45px;
+    text-align: center;
+    font-size: 14px;
+    color: #fff;
+    border: none;
+    background-image: linear-gradient( to right, #649bff, #0070fa, #649bff);
+    border-radius: 10px;
+}
+
+#but1 {
+    padding: 15px 45px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 900;
+    color: black;
+    border: none;
+    background-image: linear-gradient( to right, #ffe700, #fdcc0d, #ffc107);
+    border-radius: 10px;
+}
+
+#but2 {
+    padding: 15px 45px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 900;
+    color: black;
+    border: none;
+    background-image: linear-gradient( to right, #00FFFF, #00FF00, #008000);
+    border-radius: 10px;
+}
+
+.right-sec img{
+    width: 600px;
+    height: 500px;
+    margin-top: 80px;
+    margin-right: 40px;
 }

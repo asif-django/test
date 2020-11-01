@@ -12,13 +12,15 @@
 {% bootstrap_messages %}
 
 {% block head %}
-<div class="col-sm-6">
-    <h1 class="m-0 text-dark">Goods Receiver</h1>
+<div class="col-sm-6 text-center">
+    <section class="left-sec">
+        <h3>Add Medicines</h3>
+      </section>
   </div>
-  <div class="col-sm-6">
-    <ol class="breadcrumb float-sm-right">
-      <li class="breadcrumb-item"><a href="{% url 'goods_view' %}"><button class = "btn waves-effect btn-secondary btn-md " >View</button></a></li>
-    </ol>
+  <div class="col-sm-6 text-center">
+    <section class="left-sec">
+      <a href="{% url 'goods_view' %}"><button class = "btn waves-effect btn-secondary btn-md " >View</button></a>
+    </section>
   </div>
 {% endblock %}
  
@@ -26,87 +28,169 @@
 <form method="POST">
 {% csrf_token %}
 <div class="row justify-content-center">
-    <div class="col-md-10">
-        <div class="card">
-            <div class="card-header">
-            <h3 class="card-title">Associated Purchase Orders</h3>
+    <div class="card col-md-10">
+        <div class="card-body">
+            <div class="col-md-12" >
+                <div class="card border border-warning">
+                    <div class="card-header">
+                    <h3 class="card-title">Associated Purchase Orders</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-2">
+                    <div class="row">
+                        <div class="col-3">{% bootstrap_field goods_form.grn_type set_placeholder=False  %}</div>
+                        <div class="col-3">{% bootstrap_field goods_form.received_store set_placeholder=False %}</div>
+                        <div class="col-3">{% bootstrap_field goods_form.vendor_supplier set_placeholder=False %}</div>
+                        <div class="col-3">{% bootstrap_field goods_form.invoice_no set_placeholder=False %}</div>
+                        <div class="col-3">{% bootstrap_field goods_form.received_date set_placeholder=False %}</div>
+                        <div class="col-3">{% bootstrap_field goods_form.received_by set_placeholder=False %}</div>
+                        <div class="col-3">{% bootstrap_field goods_form.invoice_date set_placeholder=False %}</div>             
+                        <div class="col-3">{% bootstrap_field goods_form.invoice_amount set_placeholder=False %}</div>
+                    </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
             </div>
-            <!-- /.card-header -->
-            <div class="card-body p-2">
-            <div class="row">
-                <div class="col-3">{% bootstrap_field goods_form.grn_type  %}</div>
-                <div class="col-3">{% bootstrap_field goods_form.received_store  %}</div>
-                <div class="col-3">{% bootstrap_field goods_form.vendor_supplier  %}</div>
-                <div class="col-3">{% bootstrap_field goods_form.invoice_no  %}</div>
-                <div class="col-3">{% bootstrap_field goods_form.received_date  %}</div>
-                <div class="col-3">{% bootstrap_field goods_form.received_by  %}</div>
-                <div class="col-3">{% bootstrap_field goods_form.invoice_date  %}</div>             
-                <div class="col-3">{% bootstrap_field goods_form.invoice_amount  %}</div>
+            <div class="col-md-12">
+                <div class="card border border-info">
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive pr-2 pl-2 pb-2 pt-0" style="height: 400px;">
+                    {{ medi_form.management_form }}
+                    <table class="table table-head-fixed table-striped table-md" >
+                        <thead>
+                        <tr>
+                            <th>S.NO</th>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                            <th>Free Quantity</th>
+                            <th>Batch ID</th>
+                            <th>Expiry Date</th>
+                            <th>Sale Price</th>
+                            <th>Cost Price</th>
+                            <th>GST(%)</th>
+                            <th>Sub-Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>                
+                        {% for form in medi_form %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{% bootstrap_field form.item_name show_label=false set_placeholder=False %}</td>
+                            <td style="width: 100px;">{% bootstrap_field form.quantity show_label=false set_placeholder=False %}</td>
+                            <td style="width: 100px;">{% bootstrap_field form.free_quantity show_label=false set_placeholder=False %}</td>
+                            <td>{% bootstrap_field form.batch_id show_label=false set_placeholder=False %}</td>
+                            <td>{% bootstrap_field form.expiry_date show_label=false set_placeholder=False %}</td>
+                            <td>{% bootstrap_field form.sale_price show_label=false set_placeholder=False %}</td>
+                            <td>{% bootstrap_field form.cost_price show_label=false set_placeholder=False %}</td>
+                            <td style="width: 100px;">{% bootstrap_field form.gst show_label=false set_placeholder=False %}</td>
+                            <td>{% bootstrap_field form.sub_total show_label=false set_placeholder=False %}</td>
+                        </tr>
+                        {% endfor %}                
+                        </tbody>
+                    </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
             </div>
+            <div class="col-md-12">    
+                <div class="card-body p-1 border border-light">
+                    <div class="row">
+                        <div class="col-3">{% bootstrap_field goods_form.gst_amount set_placeholder=False %}</div>
+                        <div class="col-3">{% bootstrap_field goods_form.remarks set_placeholder=False %}</div>
+                        <div class="col-3">{% bootstrap_field goods_form.net_amount set_placeholder=False %}</div>
+                        <div class="col-3">{% bootstrap_field goods_form.round_off set_placeholder=False %}</div>
+                    </div>
+                </div>
             </div>
-            <!-- /.card-body -->
+            <div class="col-md-12" style="text-align: end;"><br>
+                <div class="fixed-action-btn pb-4 justify-content-center ">
+                    <button type="submit" class="btn btn-primary"> Submit</button>
+                    <a href="#" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+
         </div>
+
     </div>
-    <div class="col-md-10">
-        <div class="card">
-            <!-- /.card-header -->
-            <div class="card-body table-responsive pr-2 pl-2 pb-2 pt-0" style="height: 400px;">
-            {{ medi_form.management_form }}
-            <table class="table table-head-fixed table-striped table-md" >
-                <thead>
-                <tr>
-                    <th>S.NO</th>
-                    <th>Item Name</th>
-                    <th>Quantity</th>
-                    <th>Free Quantity</th>
-                    <th>Batch ID</th>
-                    <th>Expiry Date</th>
-                    <th>Sale Price</th>
-                    <th>Cost Price</th>
-                    <th>GST(%)</th>
-                    <th>Sub-Total</th>
-                </tr>
-                </thead>
-                <tbody>                
-                {% for form in medi_form %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{% bootstrap_field form.item_name show_label=false %}</td>
-                    <td>{% bootstrap_field form.quantity show_label=false %}</td>
-                    <td>{% bootstrap_field form.free_quantity show_label=false %}</td>
-                    <td>{% bootstrap_field form.batch_id show_label=false %}</td>
-                    <td>{% bootstrap_field form.expiry_date show_label=false %}</td>
-                    <td>{% bootstrap_field form.sale_price show_label=false %}</td>
-                    <td>{% bootstrap_field form.cost_price show_label=false %}</td>
-                    <td>{% bootstrap_field form.gst show_label=false %}</td>
-                    <td>{% bootstrap_field form.sub_total show_label=false %}</td>
-                </tr>
-                {% endfor %}                
-                </tbody>
-            </table>
-            </div>
-            <!-- /.card-body -->
-        </div>
-    </div>
-    <div class="col-md-10">    
-        <div class="card-body p-1">
-            <div class="row">
-                <div class="col-3">{% bootstrap_field goods_form.gst_amount  %}</div>
-                <div class="col-3">{% bootstrap_field goods_form.remarks  %}</div>
-                <div class="col-3">{% bootstrap_field goods_form.net_amount  %}</div>
-                <div class="col-3">{% bootstrap_field goods_form.round_off  %}</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-10" style="text-align: end;"><br>
-        <div class="fixed-action-btn pb-4 justify-content-center ">
-            <button type="submit" class="btn btn-primary"> Submit</button>
-            <a href="#" class="btn btn-danger">Cancel</a>
-        </div>
-    </div>
+    
 </div>    
 </form>
 
+{% endblock %}
 
+{% block javascript %}
+<script>
+$(document).keydown(function(e) {
+
+  // Set self as the current item in focus
+  var self = $(':focus'),
+      // Set the form by the current item in focus
+      form = self.parents('form:eq(0)'),
+      focusable;
+
+  // Array of Indexable/Tab-able items
+  focusable = form.find('input,a,select,button,textarea').filter(':visible');
+
+  function enterKey(){
+    if (e.which === 13 && !self.is('textarea')) { // [Enter] key
+
+      // If not a regular hyperlink/button/textarea
+      if ($.inArray(self, focusable) && (!self.is('a')) && (!self.is('button'))){
+        // Then prevent the default [Enter] key behaviour from submitting the form
+        e.preventDefault();
+      } // Otherwise follow the link/button as by design, or put new line in textarea
+
+      // Focus on the next item (either previous or next depending on shift)
+      focusable.eq(focusable.index(self) + (e.shiftKey ? -1 : 1)).focus();
+
+      return false;
+    }
+  }
+  // We need to capture the [Shift] key and check the [Enter] key either way.
+  if (e.shiftKey) { enterKey() } else { enterKey() }
+});
+
+    function getMedTotal(e){
+        var id = $(e).attr("id")
+        console.log(id)
+        var gst = $(e).val()        
+        console.log(typeof(gst))        
+        var patt1 = /\d+/g;
+        var result = id.match(patt1)
+        console.log(result)
+        var q = document.getElementById("id_medicine_set-"+result+"-quantity").value;
+        console.log(q)
+        var cp = document.getElementById("id_medicine_set-"+result+"-cost_price").value;
+        console.log(cp)
+        var total = q*cp
+        var gst_total = total*gst/100
+        console.log(total)
+        $("#id_medicine_set-"+result+"-sub_total").val((gst_total+total).toFixed(2))        
+        var net_amount = 0
+        var vat = 0
+        for (var i = 0; i < 15; i++){
+          if ($("#id_medicine_set-"+i+"-sub_total").val()){
+              console.log(i)
+            var pre_total = Number($("#id_medicine_set-"+i+"-sub_total").val())
+            var gst1 = Number($("#id_medicine_set-"+i+"-gst").val())
+            net_amount += pre_total
+            vat+= pre_total-[pre_total*(100/(100+gst1))]
+
+          }
+        }
+        $("#id_net_amount").val(net_amount.toFixed(2))
+        $("#id_gst_amount").val(vat.toFixed(2))
+        $("#id_round_off").val(Math.round(net_amount.toFixed(2)))
+        $("#id_invoice_amount").val(Math.round(net_amount.toFixed(2)))
+    } 
+    $(function () {
+    for (var i = 0; i < 15; i++){
+          $("#id_medicine_set-"+i+"-item_name").autocomplete({
+          source: '{% url 'tablet_name' %}',
+          minLength: 1
+      });
+     }
+    });  
+</script>
 
 {% endblock %}

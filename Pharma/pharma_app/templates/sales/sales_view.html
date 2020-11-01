@@ -10,101 +10,186 @@
 
 {# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
+{% load widget_tweaks %}
 
 {% block head %}
-<div class="col-sm-6">
-    <h1 class="m-0 text-dark">OP Sales View</h1>
+<div class="col-sm-12 text-center">
+  <section class="left-sec">
+    <h3>View OP Sales</h3>
+  </section>
   </div>
 {% endblock %}
 
 {% block content %}
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-body">
-        <div class="row p-1">
-          <div class="card">
-            <div class="card-body">
-              <div class="row">
-                <form method="GET">
-                  {{ myfilter.form }}
-                  <button type="submit" class="btn btn-success"> Search </button>
-                </form>
+<div id="blur"></div>
+  <div class="row">
+    <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+              <div class="card ">
+                <div class="card-body myfontsize">              
+                  <form method="GET">
+                    <div class="row">
+                      <div class="form-group  col-md-2">
+                        {{ myfilter.form.bill_no.label_tag }}
+                        {% render_field myfilter.form.bill_no class="form-control" %}
+                      </div>
+                      <div class="form-group  col-md-2">
+                        {{ myfilter.form.phone.label_tag }}
+                        {% render_field myfilter.form.phone class="form-control" %}
+                      </div>
+                      <div class="form-group  col-md-2">
+                        {{ myfilter.form.From.label_tag }}
+                        {% render_field myfilter.form.From class="form-control" %}
+                      </div>
+                      <div class="form-group  col-md-2">
+                        {{ myfilter.form.To.label_tag }}
+                        {% render_field myfilter.form.To class="form-control" %}
+                      </div>
+                      <div class="col-md-2 pt-4">
+                      <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"></span> Search
+                      </button>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="bg-orange pl-4">Today Sale  : <b class="text-success ">{{ today_sale }}</b> </div><br>
+                        <div class="bg-orange pl-4">Yesterday Sale  : <b class="text-success">{{ yesterday_sale }}</b> </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </div>
-          </div> 
-        </div>
-        <div class="row p-1">
-          <div class="col-md-3">Total Bills:    <b class="text-success">{{ bills }}</b> </div>
-          <div class="col-md-3">Total Billed:   <b class="text-success">{{ total }} </b></div>
-          <div class="col-md-3">Total Collection:   <b class="text-success">{{ total }}</b> </div>
-          <div class="col-md-3">Current Due: <b class="text-danger"> 0.0 </b></div>
-        </div>
-        <div class="row p-1">
-          <div class="col-md-3">Cash:   <b class="text-success">{{ cash }}</b> </div>
-          <div class="col-md-3">Card:   <b class="text-success">{{ card }}</b> </div>
-          <div class="col-md-3">UPI:    <b class="text-success">{{ upi }}</b> </div>
-          <div class="col-md-3">Others:   <b class="text-success">{{ others }}</b> </div>
-        </div>
+              <div class="card card-outline card-info">
+                <div class="card-bady">
+                  <div class="row p-2 text-center">
+                    <div class="col-md-3">Total Bills:    <b class="text-success">{{ bills }}</b> </div>
+                    <div class="col-md-3">Total Billed:   <b class="text-success">{{ total }} </b></div>
+                    <div class="col-md-3">Total Collection:   <b class="text-success">{{ total }}</b> </div>
+                    <div class="col-md-3">Current Due: <b class="text-danger"> 0.0 </b></div>
 
-      </div>
-
-    </div>
-
-  </div>
-  <div class="col-sm-12">
-      <div class="card ">
-          <!-- /.card-header -->
-          <div class="card-body p-3 myfontsize">
-            <table class="table table-bordered table-sm">
-              <thead>
-                <tr>
-                  <th>S.NO</th>
-                  <th>Bill_No.</th>
-                  <th>Date</th>
-                  <th>Patien_Name</th>
-                  <th>Mobile_Number</th>
-                  <th>Referred_By</th>
-                  <th>Payment_Type</th>
-                  <th>GST_Amount</th>
-                  <th>Net_Amount</th>
-                  <th>Total_Amount</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-              {% for form in sale_form %}              
-                <tr>                                
-                  <td>{{ forloop.counter }}</td>
-                  <td>{{ form.bill_no }}</td>
-                  <td>{{ form.created_on }}</td>
-                  <td>{{ form.patient }}</td>
-                  <td>{{ form.phone }}</td>
-                  <td>{{ form.referred_by }}</td>
-                  <td>{{ form.payment_type }}</td>
-                  <td>{{ form.total_vat }}</td>
-                  <td>{{ form.net_amount }}</td>
-                  <td>{{ form.total_amount }}</td>
-                  <td>
-                    <!-- <a href="{% url 'sales_view' %}" class="btn btn-sm waves-effect">
-                      <i class="btn btn-block btn-success btn-sm">Edit</i>
-                    </a>                                                 -->
-                    
-                    <button OnClick="showSales(this)" value="{% url 'sales_item_view' form.id %}" class = "btn btn-block btn-primary btn-sm" >View</button>
-                    <!-- <a value="{% url 'sales_delete' %}" class="btn btn-sm waves-effect swalDefaultSuccess">
-                      <i class = "btn btn-block btn-danger btn-sm" >Delete</i>
-                    </a> -->
-                  </td>               
-                </tr>            
-              {% endfor %}
-              </tbody>
-            </table>
+                  </div>
+                  <div class="row p-2 text-center">
+                    <div class="col-md-3">Cash:   <b class="text-success">{{ cash }}</b> </div>
+                    <div class="col-md-3">Card:   <b class="text-success">{{ card }}</b> </div>
+                    <div class="col-md-3">UPI:    <b class="text-success">{{ upi }}</b> </div>
+                    <div class="col-md-3">Others:   <b class="text-success">{{ others }}</b> </div>
+                  </div>              
+                </div>  
+              </div>
           </div>
-          <!-- /.card-body -->
-      </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card">
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-3">
+              <table class="table table-bordered table-md text-center myfontsize" id="myTable">
+                {% include 'paginator.html' with page_obj=sale_form %}
+                <thead>
+                  <tr>
+                    <th>S.NO</th>
+                    <th>Bill_No.</th>
+                    <th>Date</th>
+                    <th>Patient_Name</th>
+                    <th>Mobile_Number</th>
+                    <th>Referred_By</th>
+                    <th>Payment_Type</th>
+                    <th>GST_Amount</th>
+                    <th>Net_Amount</th>
+                    <th>Total_Amount</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for form in sale_form %}              
+                  <tr>                                
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ form.bill_no }}</td>
+                    <td>{{ form.created_on }}</td>
+                    <td>{{ form.patient }}</td>
+                    <td>{{ form.phone }}</td>
+                    <td>{{ form.referred_by }}</td>
+                    <td>{{ form.payment_type }}</td>
+                    <td>{{ form.total_vat }}</td>
+                    <td>{{ form.net_amount }}</td>
+                    <td>{{ form.total_amount }}</td>
+                    <td>
+                      <a OnClick="showSales(this)" value="{% url 'sales_item_view' form.id %}" class="btn btn-primary" >View</a>
+                      <a value = "{% url 'sales_delete' form.id %}" class="btn btn-danger swalDefaultSuccess">Delete</a>
+                    </td>
+                  </tr>            
+                {% endfor %}              
+                </tbody>
+              </table>            
+            </div>
+            <!-- /.card-body -->
+        </div>      
+    </div>
+    <div class="col-md-7 hide" id="showSalesView">
+    </div>
+    <div class="col-md-8 hide" id="showPrintPage">
+    </div>
   </div>
-  <div class="col-md-7 hide" id="showSalesView">
-  </div>
-</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+
+    function showPrintPage(x){
+    var id = $(x).attr('value')
+    console.log(id)
+    $.ajax(
+      {
+        type : 'GET',
+        url: id,           
+      success: function( data ){
+        if (data){
+          $('#showPrintPage').html(data)
+          var printContents = document.getElementById('printItems').innerHTML;
+          var originalContents = document.body.innerHTML;
+          document.body.innerHTML = printContents;
+          window.print();
+          document.body.innerHTML = originalContents;
+          $('#close').click(function(){
+          $('#showSalesView').removeClass('show').addClass('hide')
+          })
+        }
+        else{
+          
+          $("#demo").innerHTML("no data")
+        }                
+      }
+    })
+  };
+ 
+  function showExchangeReturn(x){
+    var id = $(x).attr('value')
+    newwindow=window.open(id,'','height=550,width=900,left=400, top=200, location=0, toolbar=no');
+    if (window.focus) {newwindow.focus()}
+    return false;
+    var timer = setInterval(function() {
+        if (newwindow.closed) {
+            clearInterval(timer);
+        }
+    }, 500);
+  }
+
+  $(function () {
+          $("#id_bill_no").autocomplete({
+          source: '{% url 'bill_no' %}',
+          minLength: 1,
+      });
+    });
+
+  $(function () {
+          $("#id_phone").autocomplete({
+          source: '{% url 'patient_phone' %}',
+          minLength: 1,
+      });
+    });
+  
+
+</script>
 
 {% endblock %}

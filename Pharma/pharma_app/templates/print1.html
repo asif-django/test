@@ -1,0 +1,740 @@
+{% load static %}
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <title>Shantha | Pharma</title>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style1.css' %}">
+  <!-- Tempusdominus Bbootstrap 4 -->
+  <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- SweetAlert2 -->
+  <script src="{% static 'plugins/sweetalert2/sweetalert2.all.min.js' %}"></script>
+  <script src="{% static 'plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
+  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="{% static 'plugins/jquery/jQuery.print.js' %}"></script> -->
+
+  <style type="text/css">
+   /* #showSalesView{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #6c757d;
+      border: 0 none;
+      border-radius: 10px;
+      max-height: 400px;
+      overflow-x: hidden;
+      box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      box-sizing: border-box;
+      width: 94%;
+      margin: 0 3% 20px 3%;
+      text-align: center;
+      color: black;
+      z-index: 9999;
+
+    } */
+
+    /* #showPrintPage{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #6c757d;
+      border: 0 none;
+      border-radius: 10px;
+      max-height: 400px;
+      overflow-x: hidden;
+      box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      box-sizing: border-box;
+      width: 94%;
+      margin: 0 3% 20px 3%;
+      text-align: center;
+      color: black;
+      z-index: 9999;
+
+    } */
+
+    .printpopup{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      /* box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2); */
+      max-width: 900px;
+      max-height: 500px;
+      z-index: 9999;
+      border: 2px solid;
+
+    }
+    .print-conten-adjustment{
+      max-height: 330px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+    .hide{
+      display: none;
+    }
+    .myfontsize{
+      font-size: 12px !important;
+    }
+    .show{
+      display: block;
+    }
+    .form-group{
+      margin-bottom: 0px !important;
+    }
+    .autocomplete-items{
+      color: #000;
+      background-color: white;
+      position: relative;
+      border: 1px solid #d4d4d4;
+      border-bottom: none;
+      border-top: none;
+      z-index: 99;
+      /*position the autocomplete items to be the same width as the container:*/
+      padding: 10px;
+      left: auto;
+      right: auto;
+      max-height: 200px;
+      width: max-content;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      border-radius: 0px;
+      box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+    }
+    .ui-autocomplete{
+      color: #000;
+      background-color: white;
+      position: absolute;
+      border: 1px solid #d4d4d4;
+      border-bottom: none;
+      border-top: none;
+      z-index: 99;
+      /*position the autocomplete items to be the same width as the container:*/
+      top: 70%;
+      left: 0;
+      right: 0;
+      max-height: 200px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      border-radius: 0px;
+      box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+    }
+    .ui-autocomplete{
+      right: auto;
+    }
+    .bored_bottom{
+      border-bottom: 1px solid black;
+    }
+    .blur {
+    filter: blur(1px);
+    -webkit-filter: blur(1px);
+    -moz-filter: blur(1px);
+    -o-filter: blur(1px);
+    -ms-filter: blur(1px);
+    }
+
+    .dropdown-menu{
+      z-index: 9999;
+      overflow-x: visible;
+    }
+    /* @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printable * {
+        visibility: visible;
+        display: block;
+        width: auto;
+      }
+    } */
+  </style>
+</head>
+<body class="hold-transition sidebar-mini sidebar-collapse">
+{% block body %}
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-dark navbar-gray-dark">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li>
+        <div class="logo">
+          <a href="">Shantha Pharma</a>
+        </div>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'home' %}" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'goods_view' %}" class="nav-link">Goods</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'sales_create' %}" class="nav-link">Sale</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'sales_view' %}" class="nav-link">OP Sales</a>
+      </li>
+    </ul>
+
+
+    <ul class="navbar-nav ml-auto">
+      {% if request.user.is_authenticated %}
+
+      <li class="nav-item d-none d-sm-inline-block">
+        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+      </li>
+
+      {% else %}
+      <li class="nav-item d-none d-sm-inline-block">
+        <a class="nav-link" href="{% url 'login' %}">Login</a>
+      </li>
+
+
+      {% endif %}
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{% static 'index3.html' %}" class="brand-link">
+      <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text font-weight-light">Pharma</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">{% firstof request.user.get_full_name request.user.username|title %}</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item has-treeview menu-open">
+            <a href="{% url 'home' %}" class="nav-link active">
+              <i class="nav-icon fas fa-home"></i>
+              <p>
+                Home
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'goods_view' %}" class="nav-link active">
+                  <i class="fa fa-ambulance nav-icon"></i>
+                  <p>Goods</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'sales_create' %}" class="nav-link">
+                  <i class="fas fa-file-medical nav-icon"></i>
+                  <p>Sale</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'sales_view' %}" class="nav-link">
+                  <i class="nav-icon fas fa-database"></i>
+                  <p>
+                    OP Sale
+                  </p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header bg-transparent">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          {% block head %}
+          <!-- <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Starter Page</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Starter Page</li>
+            </ol>
+          </div> -->
+          <!-- /.col -->
+          {% endblock %}
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content" id="blur">
+      <div class="container-fluid">
+          {% block content %}
+          <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card" style="border: 2px solid;" >
+                    <div class="card-body" id="printItems">
+                        <div class="row bored_bottom">
+                            <div class="col-md-12 text-center b-1">
+                                <h1>Renu Medical And General Store</h1>
+                                <p>1-7-1002/40, Opp: SBI Bank Ramnagar to VST Road, Hyderabad, Telangana 500020. Ph: 9963932663 </p>
+                                <h2> CASH BILL ( TAX INVOICE )</h2>
+
+                            </div>
+
+                        </div>
+                        <div class="row text-center bored_bottom p-2">
+                            <div class="col-md-4"><b>Invoice Number :</b> {{ sale_form.bill_no }} </div>
+                            <div class="col-md-4"><b>Invoice Date :</b> {{ sale_form.created_on }} </div>
+                            <div class="col-md-4"><b>MR NO :</b> </div>
+                        </div>
+                        <div class="row bored_bottom p-2 text-center">
+                            <div class="col-md-3"><b>Patient Name :</b> {{ sale_form.patient }}</div>
+                            <div class="col-md-3"><b>Patient No :</b> {{ sale_form.phone }}</div>
+                            <div class="col-md-6"><b>Patient Address :</b> NONE</div>
+
+                        </div>
+                        <div class="row text-round bored_bottom p-2">
+                            <div class="col-md-6"> <b>Age & Sex :</b> 35/male </div>
+                            <div class="col-md-6"> <b>Docotor :</b> {{ sale_form.referred_by }}</div>
+
+                        </div>
+                        <div class="row bored_bottom table-responsive">
+                            <table class="table table-striped table-head-fixed table-md">
+                                <thead>
+                                <tr>
+                                    <th>S.NO</th>
+                                    <th>Item Name</th>
+                                    <th>Quantity</th>
+                                    <th>Batch ID</th>
+                                    <th>Unit Price</th>
+                                    <th>Discount</th>
+                                    <th>GST(%)</th>
+                                    <th>Sub-Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {% for form in sale_item %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ form.item_name }}</td>
+                                        <td>{{ form.quantity }}</td>
+                                        <td>{{ form.batch_id }}</td>
+                                        <td>{{ form.unit_price }}</td>
+                                        <td>{{ form.discount }}</td>
+                                        <td>{{ form.gst }}</td>
+                                        <td>{{ form.sub_total }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                        </div>
+                        <div class="row bored_bottom p-2" style="text-align: -webkit-center;">
+                            <div class="col-md-4"> <b>Paid : </b> {{ sale_form.total_amount }} </div>
+                            <div class="col-md-4"> <b>Vat : </b> {{ sale_form.total_vat }} </div>
+                            <div class="col-md-4"> <b>Total : </b>{{ sale_form.total_amount }} </div>
+
+                        </div>
+                        <br>
+                        <div class="row pt-2">
+                            <div class="col-md-7 p-2">
+                                <b>{{ sale_form.payment_type }} : </b>{{ sale_form.total_amount }} <br>
+                                <b>Amount in words :</b><br>
+                                <b>Amount Subject to Reverse Charge : </b>Nil<br>
+                                <p><b>NOTE :</b><br> ITEMS ONCE SOLD WILL BE NOT TAKEN BACK/EXCHANGE. <br>
+                                    COLD CHAIN PRODUCTIONS WILL NOT BE TAKEN BACK OR EXCHANGED. </p>
+                                <p><b>Declaration :</b><br>
+                                The data furnished above are true and fair and price is the only sole consideration</p>
+
+                            </div>
+                            <div class="col-md-5 text-center p-2">
+                                <h3>For Renu Medical And General Store </h3><br>
+                                <h4>Signature</h4><br>
+                                <h5>E & OE</h5>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row justify-content-end">
+                    <a onclick="printInvoice()" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+
+                    <br>
+                    <a href="{% url 'sales_view' %}" class = "btn waves-effect btn-danger btn-sm " >Close</a>
+
+                </div>
+            </div>
+        </div>
+
+          {% endblock %}
+          <!-- Button trigger modal -->
+          <br>
+          <!-- /.col-md-6 -->
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+    <div class="p-3">
+      <h5>Title</h5>
+      <p>Sidebar content</p>
+    </div>
+  </aside>
+  <!-- /.control-sidebar -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <!-- To the right -->
+    <div class="float-right d-none d-sm-inline">
+      Anything you want
+    </div>
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2014-2019 <a href="">Pharma.com</a>.</strong> All rights reserved.
+  </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+<!-- jQuery -->
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="{% static 'plugins/jquery/jQuery.print.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<script>
+$(document).ready(function(){
+  var printContents = document.getElementById('printItems').innerHTML;
+  var originalContents = document.body.innerHTML;
+  document.body.innerHTML = printContents;
+  window.print();
+  document.body.innerHTML = originalContents;
+    })
+</script>
+{% endblock %}
+</body>
+</html>
+//var inp = document.getElementById('id_l_from')
+    function autocomplete(inp, arr) {
+      /*the autocomplete function takes two arguments,
+      the text field element and an array of possible autocompleted values:*/
+      var currentFocus;
+      /*execute a function when someone writes in the text field:*/
+      inp.addEventListener("input", function(e) {
+          var a, b, i, val = this.value;
+          /*close any already open lists of autocompleted values*/
+          closeAllLists();
+          if (!val) { return false;}
+          currentFocus = -1;
+          /*create a DIV element that will contain the items (values):*/
+          a = document.createElement("DIV");
+          a.setAttribute("id", this.id + "autocomplete-list");
+          a.setAttribute("class", "autocomplete-items");
+          /*append the DIV element as a child of the autocomplete container:*/
+          this.parentNode.appendChild(a);
+          /*for each item in the array...*/
+          for (i = 0; i < arr.length; i++) {
+            /*check if the item starts with the same letters as the text field value:*/
+            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+              /*create a DIV element for each matching element:*/
+              b = document.createElement("DIV");
+              /*make the matching letters bold:*/
+              b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+              b.innerHTML += arr[i].substr(val.length);
+              /*insert a input field that will hold the current array item's value:*/
+              b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+              /*execute a function when someone clicks on the item value (DIV element):*/
+              b.addEventListener("click", function(e) {
+                  /*insert the value for the autocomplete text field:*/
+                  inp.value = this.getElementsByTagName("input")[0].value;
+                  /*close the list of autocompleted values,
+                  (or any other open lists of autocompleted values:*/
+                  closeAllLists();
+              });
+              a.appendChild(b);
+            }
+          }
+      });
+      /*execute a function presses a key on the keyboard:*/
+      inp.addEventListener("keydown", function(e) {
+          var x = document.getElementById(this.id + "autocomplete-list");
+          if (x) x = x.getElementsByTagName("div");
+          if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+            increase the currentFocus variable:*/
+            currentFocus++;
+            /*and and make the current item more visible:*/
+            addActive(x);
+          } else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+          } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (currentFocus > -1) {
+              /*and simulate a click on the "active" item:*/
+              if (x) x[currentFocus].click();
+            }
+          }
+      });
+      function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("autocomplete-active");
+      }
+      function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+          x[i].classList.remove("autocomplete-active");
+        }
+      }
+      function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+          if (elmnt != x[i] && elmnt != inp) {
+            x[i].parentNode.removeChild(x[i]);
+
+          }
+        }
+      }
+      /*execute a function when someone clicks in the document:*/
+      document.addEventListener("click", function (e) {
+          closeAllLists(e.target);
+      });
+    }
+
+
+ //////   get field values from data base and paste it /////////
+var global_qan = 0
+    function getFieldValues(e){
+      setTimeout(() => {
+        console.log("working")
+        var id = $(e).attr("id")
+        var v1 = $(e).val()
+        console.log(v1)
+        console.log(id)
+        var patt1 = /\d+/g;
+        var result = id.match(patt1)
+        var d = document.getElementById("id_patientcollectedmedicine_set-"+result+"-item_name").value;
+        console.log(d)
+        var url = "/fill_data/xyz/".replace("xyz", d)
+        $.ajax({
+        url: url,
+        type: 'GET',
+        success: function (data) {
+            console.log(data[0]["fields"]["quantity"])
+            var quantity = data[0]["fields"]["sale_quantity"]
+            global_qan = quantity
+            if (quantity <= 0){
+                var msg = (d+ "&nbsp <spam class='text-danger'>is out of stock<spam>")
+                Swal.fire({
+                    title: msg,
+                    showClass: {
+                      popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                      popup: 'animate__animated animate__fadeOutUp'
+                    }
+                  })
+                  $("#id_patientcollectedmedicine_set-"+result+"-quantity").val(quantity);
+                  $("#id_patientcollectedmedicine_set-"+result+"-item_name").val('')
+                  // var sub = $("#id_patientcollectedmedicine_set-"+id+"-unit_price").val()
+                  // $("#id_patientcollectedmedicine_set-"+id+"-sub_total").val((quantity*sub).toFixed(2))
+                  // var total = 0
+                  // var vat = 0
+                  // for (var i = 0; i < 10; i++){
+                  //   if ($("#id_patientcollectedmedicine_set-"+i+"-sub_total").val()){
+                  //     var pre_total = Number($("#id_patientcollectedmedicine_set-"+i+"-sub_total").val())
+                  //     var gst1 = Number($("#id_patientcollectedmedicine_set-"+i+"-gst").val())
+                  //     total+=pre_total
+                  //     vat+= pre_total-[pre_total*(100/(100+gst1))]
+                  //   }
+
+                  //   }
+                  $("#id_total_amount").val(total.toFixed(2))
+                  $("#id_total_vat").val(vat.toFixed(2))
+                  $("#id_net_amount").val((total-vat).toFixed(2))
+              }
+            else{
+              $("#id_patientcollectedmedicine_set-"+result+"-batch_id").val(data[0]["fields"]["batch_id"])
+              $("#id_patientcollectedmedicine_set-"+result+"-unit_price").val(data[0]["fields"]["sale_price"])
+              $("#id_patientcollectedmedicine_set-"+result+"-expiry_date").val(data[0]["fields"]["expiry_date"])
+              $("#id_patientcollectedmedicine_set-"+result+"-gst").val(data[0]["fields"]["gst"])
+              $("#id_patientcollectedmedicine_set-"+result+"-sub_total").val(data[0]["fields"]["sale_price"])
+              $("#id_patientcollectedmedicine_set-"+result+"-discount").val(0)
+              //s("#id_patientcollectedmedicine_set-"+result+"-quantity").val("1")
+              var element = document.getElementById("id_patientcollectedmedicine_set-"+result+"-quantity");
+              element.value = "1";
+              var total = 0
+              var vat = 0
+              for (var i = 0; i < 10; i++){
+                if ($("#id_patientcollectedmedicine_set-"+i+"-sub_total").val()){
+                  var pre_total = Number($("#id_patientcollectedmedicine_set-"+i+"-sub_total").val())
+                  var gst1 = Number($("#id_patientcollectedmedicine_set-"+i+"-gst").val())
+                  total+= pre_total
+                  vat+= pre_total-[pre_total*(100/(100+gst1))]
+                }
+
+                }
+              $("#id_total_amount").val(total.toFixed(2))
+              $("#id_total_vat").val(vat.toFixed(2))
+              $("#id_net_amount").val((total-vat).toFixed(2))
+
+            }
+        }
+
+
+        });
+
+    }, 300);
+
+  };
+
+////// sum on quantity selection /////////////
+  function getSumOf(e){
+    console.log("its working bro : "+global_qan)
+    var id_with_text = $(e).attr("id")
+    var patt1 = /\d+/g; // regular expresion to get id no. from id_with_text
+    var id = id_with_text.match(patt1)
+    var quan = $(e).val()
+    if (quan > global_qan){
+      var msg = ("Your Availability Quantity is = " + global_qan )
+      Swal.fire({
+          title: msg,
+          showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+          },
+          hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+          }
+        })
+        $("#id_patientcollectedmedicine_set-"+id+"-quantity").val(global_qan);
+        var sub = $("#id_patientcollectedmedicine_set-"+id+"-unit_price").val()
+        $("#id_patientcollectedmedicine_set-"+id+"-sub_total").val((global_qan*sub).toFixed(2))
+        var total = 0
+        var vat = 0
+        for (var i = 0; i < 10; i++){
+          if ($("#id_patientcollectedmedicine_set-"+i+"-sub_total").val()){
+            var pre_total = Number($("#id_patientcollectedmedicine_set-"+i+"-sub_total").val())
+            var gst1 = Number($("#id_patientcollectedmedicine_set-"+i+"-gst").val())
+            total+=pre_total
+            vat+= pre_total-[pre_total*(100/(100+gst1))]
+          }
+
+          }
+        $("#id_total_amount").val(total.toFixed(2))
+        $("#id_total_vat").val(vat.toFixed(2))
+        $("#id_net_amount").val((total-vat).toFixed(2))
+    }
+
+    else{
+      if (!quan){
+      $("#id_patientcollectedmedicine_set-"+id+"-item_name").val('')
+      $("#id_patientcollectedmedicine_set-"+id+"-batch_id").val('')
+      $("#id_patientcollectedmedicine_set-"+id+"-unit_price").val('')
+      $("#id_patientcollectedmedicine_set-"+id+"-gst").val('')
+      $("#id_patientcollectedmedicine_set-"+id+"-sub_total").val('')
+      $("#id_patientcollectedmedicine_set-"+id+"-discount").val('')
+      $("#id_patientcollectedmedicine_set-"+id+"-sub_total").val('')
+      $("#id_patientcollectedmedicine_set-"+id+"-expiry_date").val('')
+    }
+    var sub = $("#id_patientcollectedmedicine_set-"+id+"-unit_price").val()
+    $("#id_patientcollectedmedicine_set-"+id+"-sub_total").val((quan*sub).toFixed(2))
+    var total = 0
+    var vat = 0
+    for (var i = 0; i < 10; i++){
+      if ($("#id_patientcollectedmedicine_set-"+i+"-sub_total").val()){
+        var pre_total = Number($("#id_patientcollectedmedicine_set-"+i+"-sub_total").val())
+        var gst1 = Number($("#id_patientcollectedmedicine_set-"+i+"-gst").val())
+        total+=pre_total
+        vat+= pre_total-[pre_total*(100/(100+gst1))]
+      }
+
+      }
+    $("#id_total_amount").val(total.toFixed(2))
+    $("#id_total_vat").val(vat.toFixed(2))
+    $("#id_net_amount").val((total-vat).toFixed(2))
+
+    }
+
+
+
+  }
+
+
+    /*An array containing all the country names in the world:*/
+    var url = "{% url 'take_medicine' %}"
+    $.ajax(
+        {
+          type:"GET",
+          url: url,
+        success: function(data){
+          var medicine = data.split(',')
+          for (var i = 0; i < 10; i++){
+            autocomplete(document.getElementById("id_patientcollectedmedicine_set-"+i+"-item_name"), medicine);
+
+          }
+        }
+      });4207399346320780
+        4207399346320780

@@ -49,3 +49,23 @@
     
 </body>
 </html>
+function printInvoice(x) {
+  var id = $(x).attr('value')
+    console.log(id)
+    $.ajax(
+      {
+        type : 'GET',
+        url: id,
+      success: function( data ){
+        if (data){
+          var divContents = document.getElementById("printable").innerHTML;
+          var a = window.open('', '', 'height=500, width=500');
+          a.document.write(divContents);
+          a.document.close();
+          a.print();
+          $('#myclose').click(function(){
+            $('.printpopup').removeClass('show').addClass('hide')
+            })
+           }
+
+}

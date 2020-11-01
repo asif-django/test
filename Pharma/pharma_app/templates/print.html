@@ -1,0 +1,125 @@
+{% extends 'pop_base.html' %}
+{% load static %}
+{# Load the tag library #}
+{% load bootstrap4 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+
+{% bootstrap_javascript jquery='full' %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block title %}<title>Print</title>{% endblock %}
+
+{% block content %}
+<br>
+<button class="btn btn-secondary"  OnClick="showPrintPage()" id="printposision"><i class="fas fa-print"></i>Print</button>
+<div class="card" style="border: 2px solid;" >
+    <div class="card-body" id="printItems">
+        <div class="row bored_bottom">
+            <div class="col-md-12 text-center b-1">
+                <h1>Renu Medical And General Store</h1>
+                <p>1-7-1002/40, Opp: SBI Bank, VST Road, Ramnagar, Hyderabad, Telangana 500020, Ph: 9963932663</p>
+                <h2> CASH BILL</h2>
+
+            </div>
+                        
+        </div>
+        <div class="row text-center bored_bottom p-2">
+            <div class="col-md-4"><b>Invoice Number :</b> {{ sale_form.bill_no }} </div>
+            <div class="col-md-4"><b>Invoice Date :</b> {{ sale_form.created_on }} </div>
+            <div class="col-md-4"><b>MR NO :</b> </div>
+        </div>
+        <div class="row bored_bottom p-2 text-center">
+            <div class="col-md-3"><b>Patient Name :</b> {{ sale_form.patient }}</div>
+            <div class="col-md-3"><b>Patient No :</b> {{ sale_form.phone }}</div>
+            <div class="col-md-6"><b>Patient Address :</b> NONE</div>
+
+        </div>
+        <div class="row text-round bored_bottom p-2">
+            <div class="col-md-6"> <b>Age & Sex :</b> None/None </div>
+            <div class="col-md-6"> <b>Docotor :</b> {{ sale_form.referred_by }}</div>
+
+        </div>
+        <br>
+        <div class="row bored_bottom table-responsive">
+            <table class="table table-striped table-head-fixed table-md">
+                <thead >
+                <tr>
+                    <th>S.NO</th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Batch ID</th>
+                    <th>Unit Price</th>
+                    <th>Expiry Date</th>
+                    <th>Discount</th>
+                    <th>GST(%)</th>
+                    <th>Sub-Total</th>
+                </tr>
+                </thead>
+                <tbody>                
+                    {% for form in sale_item %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ form.item_name }}</td>
+                        <td>{{ form.quantity }}</td>
+                        <td>{{ form.batch_id }}</td>
+                        <td>{{ form.unit_price }}</td>
+                        <td>{{ form.expiry_date }}</td>
+                        <td>{{ form.discount }}</td>
+                        <td>{{ form.gst }}</td>
+                        <td>{{ form.sub_total }}</td>
+                    </tr>
+                    {% endfor %}                
+                    </tbody>
+                </table>
+
+        </div>
+        <div class="row bored_bottom p-2" style="text-align: -webkit-center;">
+            <div class="col-md-4"> <b>Paid : </b> {{ sale_form.total_amount }} </div>
+            <div class="col-md-4"> <b>Vat : </b> {{ sale_form.total_vat }} </div>
+            <div class="col-md-4"> <b>Total : </b>{{ sale_form.total_amount }} </div>
+
+        </div>
+        <br>
+        <div class="row pt-2">
+            <div class="col-md-7 pr-2">
+                <b>{{ sale_form.payment_type }} : </b>{{ sale_form.total_amount }} <br>
+                <b>Amount in words :</b><br>
+                <b>Amount Subject to Reverse Charge : </b>Nil<br>
+                <p><b>NOTE :</b><br> ITEMS ONCE SOLD WILL BE NOT TAKEN BACK/EXCHANGE.<br>
+                    COLD CHAIN PRODUCTIONS WILL NOT BE TAKEN BACK OR EXCHANGED. </p>
+                <p><b>Declaration :</b><br>
+                The data furnished above are true and fair and price is the only sole consideration</p>
+
+            </div>
+            <div class="col-md-5 text-center">
+                <h3>For Renu Medical And General Store </h3><br>
+                <h4>Signature</h4><br>
+                <h5>E & OE</h5>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    function showPrintPage(){    
+    var printContents = document.getElementById('printItems').innerHTML;
+    var originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+    
+    } 
+
+</script>       
+{% endblock %}

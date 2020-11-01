@@ -1,5 +1,13 @@
 {% load static %}
-<!DOCTYPE html>
+{# Load the tag library #}
+{% load bootstrap4 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+
+{% bootstrap_javascript jquery='full' %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+
 <!--
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
@@ -22,16 +30,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{% static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- SweetAlert2 -->
+  <script src="{% static 'plugins/sweetalert2/sweetalert2.all.min.js' %}"></script>
+  <script src="{% static 'plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+  <!-- Toastr -->
+  <script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+  <!-- Tempusdominus Bbootstrap 4 -->
+  <link rel="stylesheet" href="{% static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
+  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="{% static 'plugins/jquery/jQuery.print.js' %}"></script> -->
 
   <style type="text/css">
-   #showSalesView{
-      position: absolute;
+   /* #showSalesView{
+      position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       background: #6c757d;
       border: 0 none;
-      border-radius: 0px;
+      border-radius: 10px;
+      max-height: 400px;
+      overflow-x: hidden;
       box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
       padding: 10px;
       box-sizing: border-box;
@@ -41,6 +61,55 @@ scratch. This page gets rid of all links and provides the needed markup only.
       color: black;
       z-index: 9999;
     
+    } */
+
+    /* #showPrintPage{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #6c757d;
+      border: 0 none;
+      border-radius: 10px;
+      max-height: 400px;
+      overflow-x: hidden;
+      box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      box-sizing: border-box;
+      width: 94%;
+      margin: 0 3% 20px 3%;
+      text-align: center;
+      color: black;
+      z-index: 9999;
+
+    } */
+
+    .print-popup{
+      position: fixed !important;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      /* box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2); */
+      max-width: 900px;
+      max-height: 500px;
+      z-index: 9999;
+      border: 2px solid;
+
+    }
+
+    .form-reset{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: fit-content;
+      max-height: 500px;
+      z-index: 9999;
+    }
+    .print-conten-adjustment{
+      max-height: 330px;
+      overflow-y: scroll;
+      overflow-x: hidden;
     }
     .hide{
       display: none;
@@ -54,8 +123,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
     .form-group{
       margin-bottom: 0px !important;
     }
+    .autocomplete-items{
+      color: #000;
+      background-color: white;
+      position: relative;
+      border: 1px solid #d4d4d4;
+      border-bottom: none;
+      border-top: none;
+      z-index: 99;
+      /*position the autocomplete items to be the same width as the container:*/
+      padding: 10px;
+      left: auto;
+      right: auto;
+      max-height: 200px;
+      width: max-content;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      border-radius: 0px;
+      box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+    }
     .ui-autocomplete{
       color: #000;
+      cursor: pointer;
       background-color: white;
       position: absolute;
       border: 1px solid #d4d4d4;
@@ -74,25 +163,69 @@ scratch. This page gets rid of all links and provides the needed markup only.
     }
     .ui-autocomplete{
       right: auto;
+      list-style: none !important;
+      padding: 10px !important;
+      overflow-y: hidden !important;
     }
+    .bored_bottom{
+      border-bottom: 1px solid black;
+    }
+    #blur {
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 99; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+    }
+
+    .dropdown-menu{
+      z-index: 9999;
+      overflow-x: visible;
+    }
+    /* @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printable * {
+        visibility: visible;
+        display: block;
+        width: auto;
+      }
+    } */
+   .form-control:required{
+    placeholder: "asif" !important;
+  }
+  td a{
+  color: White !important;
+  text-decoration: none;
+  }
+
   </style>
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse">
+{% bootstrap_messages %}
+{% block body %}
 <div class="wrapper">
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+  <nav class="main-header navbar navbar-expand navbar-dark navbar-gray-dark">
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li>
         <div class="logo">  
-          <a href="">Shantha Pharma</a>
+          <a href="">Renu Pharma</a>
         </div>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="" class="nav-link">Home</a>
+        <a href="{% url 'home' %}" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{% url 'goods_view' %}" class="nav-link">Goods</a>
@@ -106,12 +239,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </ul>
     
 
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ml-auto"> 
+      {% if request.user.is_authenticated %}
+      
       <li class="nav-item d-none d-sm-inline-block">
-        <div class="contact_btn">  
-          <a href=""> contact</a>      
-        </div>
-      </li> 
+        <a class="nav-link" href="{% url 'user_logout' %}">Logout</a>
+      </li>
+      
+      {% else %}
+      <li class="nav-item d-none d-sm-inline-block">
+        <a class="nav-link" href="{% url 'user_login' %}">Login</a>
+      </li>
+      
+      
+      {% endif %}
     </ul> 
   </nav>
   <!-- /.navbar -->
@@ -122,7 +263,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <a href="{% static 'index3.html' %}" class="brand-link">
       <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">Pharma</span>
     </a>
 
     <!-- Sidebar -->
@@ -130,10 +271,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+          {% if request.user.photo %}<img src="{{ request.user.photo.url }}" class="img-circle elevation-2" alt="User Image">
+          {% else %}<img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+          {% endif %}
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="{% url 'user_profile' %} " class="d-block">{% firstof request.user.get_full_name request.user.user_name|title %}</a>
         </div>
       </div>
 
@@ -143,36 +286,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="{% url 'home' %}" class="nav-link active">
+              <i class="nav-icon fas fa-home"></i>
               <p>
-                Starter Pages
+                Home
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Active Page</p>
+                <a href="{% url 'goods_view' %}" class="nav-link active">
+                  <i class="fa fa-ambulance nav-icon"></i>
+                  <p>Goods</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Inactive Page</p>
+                <a href="{% url 'sales_create' %}" class="nav-link">
+                  <i class="fas fa-file-medical nav-icon"></i>
+                  <p>Sale</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'sales_view' %}" class="nav-link">
+                  <i class="nav-icon fas fa-database"></i>
+                  <p>
+                    OP Sale
+                  </p>
                 </a>
               </li>
             </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Simple Link
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
           </li>
         </ul>
       </nav>
@@ -184,19 +326,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
+    <div class="content-header bg-transparent">
       <div class="container-fluid">
         <div class="row mb-2">
           {% block head %}
-          <div class="col-sm-6">
+          <!-- <div class="col-sm-6">
             <h1 class="m-0 text-dark">Starter Page</h1>
-          </div><!-- /.col -->
+          </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Starter Page</li>
             </ol>
-          </div><!-- /.col -->
+          </div> -->
+          <!-- /.col -->
           {% endblock %}
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -204,10 +347,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <div class="content" id="blur">
+    <div class="content">
       <div class="container-fluid">
-          {% block content %}  
+          {% block content %}
+          <main>
+            <section class="left-sec">
+              <h2>We are here for your care</h2>  
+              <h1>We are the best doctor</h1>
+              <p>we are here for your care 24/7 any help just call us.</p>
+              <button>More Details</button>
+
+            </section>
+            <section class="right-sec">
+              <img src="../static/dist/img/output-onlinepngtools (1).png">
+
+            </section>
+
+          </main>
+            
           {% endblock %}
+          <!-- Button trigger modal -->
+          <br>
           <!-- /.col-md-6 -->
         <!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -233,7 +393,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       Anything you want
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2014-2019 <a href="">AdminLTE.io</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2014-2019 <a href="">Pharma.com</a>.</strong> All rights reserved.
   </footer>
 </div>
 <!-- ./wrapper -->
@@ -241,8 +401,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
 <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="{% static 'plugins/jquery/jQuery.print.js' %}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+  <!-- SweetAlert2 -->
+  <script src="{% static 'plugins/sweetalert2/sweetalert2.all.min.js' %}"></script>
+  <script src="{% static 'plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+<!-- Toastr -->
+  <script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+  <!-- Tempusdominus Bbootstrap 4 -->
+  <link rel="stylesheet" href="{% static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
 <!-- Bootstrap 4 -->
 <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
@@ -250,13 +419,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{% static 'plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
 <!-- AdminLTE App -->
 <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<!-- InputMask -->
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
 <script>
-  $("select#id_grn_type.form-control option[value='']").html('<option>GRN Type</option>');
-  $("select#id_grn_type option[value='']").html('<option>Select GRN Type</option>');
-  $("select#id_received_store.form-control option[value='']").html('<option>Received Store</option>');
-  $("select#id_received_store option[value='']").html('<option>Select Store</option>');
-  $("select#id_store.form-control option[value='']").html('<option>Store</option>');
-  $("select#id_payment_type.form-control option[value='']").html('<option>Payment Type</option>');
+  $("select#id_grn_type.form-control option[value='']").html('GRN Type');
+  $("select#id_grn_type option[value='']").html('Select GRN Type');
+  $("select#id_received_store.form-control option[value='']").html('Received Store');
+  $("select#id_received_store option[value='']").html('Select Store');
+  $("select#id_store.form-control option[value='']").html('Store');
+  $("select#id_payment_type.form-control option[value='']").html('Payment Type');
+  for (var i = 0; i < 15; i++){
+    $("select#id_patientcollectedmedicine_set-"+i+"-quantity.form-control option[value='']").html(0);
+    }
   // $("#id_From").attr({
   //   "class" : "datetimepicker-input",
   //   "data-toggle":"datetimepicker",
@@ -267,8 +442,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
   //   "data-toggle":"datetimepicker",
   //   "data-target":"#id_To"
   // })
-  function showSales(x){
+
+
+
+function showSales(x){
     var id = $(x).attr('value')
+    document.getElementById("blur").style.display = "block";
     console.log(id)
     $.ajax(
       {
@@ -278,7 +457,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         if (data){
           $('#showSalesView').html(data).removeClass('hide').addClass('show')
           $('#close').click(function(){
+          document.getElementById("blur").style.display = "none";
           $('#showSalesView').removeClass('show').addClass('hide')
+
           })
         }
         else{
@@ -288,9 +469,216 @@ scratch. This page gets rid of all links and provides the needed markup only.
       }
     })
   };
+
+  function popit() {
+    newwindow=window.open(url,'asifkhan','height=500,width=900,left=400, top=200, location=');
+    if (window.focus) {newwindow.focus()}
+    return false;
+}
+
+ //////   get field values from data base and paste it /////////
+    function getFieldValues(e){
+        console.log("working")
+        var id = $(e).attr("id")
+        var item_name = $(e).val()
+        console.log(item_name)
+        console.log(id)
+        var patt1 = /\d+/g;
+        var result = id.match(patt1)
+        var url = "/fill_data/"
+        $.ajax({
+        url: url,
+        data:{ "value":item_name, "user_id":0},
+        type: 'GET',
+        success: function (data) {
+            if (data[0]){var quantity = data[0]["fields"]["sale_quantity"]}else{var quantity = 0 }
+            if (quantity <= 0){
+                var msg = (item_name+ "&nbsp <spam class='text-danger'>is out of stock<spam>")
+                Swal.fire({
+                    title: msg,
+                    showClass: {
+                      popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                      popup: 'animate__animated animate__fadeOutUp'
+                    }
+                  })
+                  $("#id_patientcollectedmedicine_set-"+result+"-item_name").val('')
+              }
+            else{
+              $("#id_patientcollectedmedicine_set-"+result+"-batch_id").val(data[0]["fields"]["batch_id"])
+              $("#id_patientcollectedmedicine_set-"+result+"-unit_price").val(data[0]["fields"]["sale_price"])
+              $("#id_patientcollectedmedicine_set-"+result+"-expiry_date").val(data[0]["fields"]["expiry_date"])
+              $("#id_patientcollectedmedicine_set-"+result+"-gst").val(data[0]["fields"]["gst"])
+              $("#id_patientcollectedmedicine_set-"+result+"-sub_total").val(data[0]["fields"]["sale_price"])
+              $("#id_patientcollectedmedicine_set-"+result+"-discount").val(0)
+              var element = document.getElementById("id_patientcollectedmedicine_set-"+result+"-quantity");
+              element.value = "1";
+              var total = 0
+              var vat = 0
+              for (var i = 0; i < 10; i++){
+                if ($("#id_patientcollectedmedicine_set-"+i+"-sub_total").val()){
+                  var pre_total = Number($("#id_patientcollectedmedicine_set-"+i+"-sub_total").val())
+                  var gst1 = Number($("#id_patientcollectedmedicine_set-"+i+"-gst").val())
+                  total+= pre_total
+                  vat+= pre_total-[pre_total*(100/(100+gst1))]
+                }
+
+                }
+              $("#id_total_amount").val(total.toFixed(2))
+              $("#id_total_vat").val(vat.toFixed(2))
+              $("#id_net_amount").val((total-vat).toFixed(2))
+
+            }
+        }
+
+
+        });
+
+  };
+
+////// sum on quantity selection /////////////
+  function getSumOf(e){
+    console.log("its working bro..........")
+    var id_with_text = $(e).attr("id")
+    var patt1 = /\d+/g; // regular expression to get id no. from id_with_text
+    var id = id_with_text.match(patt1)
+    var quan = $(e).val()
+    console.log(quan)
+    var item_name = $("#id_patientcollectedmedicine_set-"+id+"-item_name").val()
+    console.log(item_name)
+    var url = "/fill_data/"
+        $.ajax({
+        url: url,
+        type: 'GET',
+        data:{ "value":item_name, "user_id":0},
+        success: function (data) {
+            if (data[0]){var quantity = data[0]["fields"]["sale_quantity"]}else{var quantity = 0 }
+            console.log(quantity)
+            if (quan > quantity){
+              var msg = ("Your Availability Quantity is = " + quantity )
+              Swal.fire({
+                  title: msg,
+                  showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                  },
+                  hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                  }
+                })
+                $("#id_patientcollectedmedicine_set-"+id+"-quantity").val(quantity);
+                var sub = $("#id_patientcollectedmedicine_set-"+id+"-unit_price").val()
+                $("#id_patientcollectedmedicine_set-"+id+"-sub_total").val((quantity*sub).toFixed(2))
+                var total = 0
+                var vat = 0
+                for (var i = 0; i < 10; i++){
+                  if ($("#id_patientcollectedmedicine_set-"+i+"-sub_total").val()){
+                    var pre_total = Number($("#id_patientcollectedmedicine_set-"+i+"-sub_total").val())
+                    var gst1 = Number($("#id_patientcollectedmedicine_set-"+i+"-gst").val())
+                    total+=pre_total
+                    vat+= pre_total-[pre_total*(100/(100+gst1))]
+                  }
+
+                  }
+                $("#id_total_amount").val(total.toFixed(2))
+                $("#id_total_vat").val(vat.toFixed(2))
+                $("#id_net_amount").val((total-vat).toFixed(2))
+            }
+
+            else{
+              if (quan==0){
+              $("#id_patientcollectedmedicine_set-"+id+"-item_name").val('')
+              $("#id_patientcollectedmedicine_set-"+id+"-batch_id").val('')
+              $("#id_patientcollectedmedicine_set-"+id+"-unit_price").val('')
+              $("#id_patientcollectedmedicine_set-"+id+"-gst").val('')
+              $("#id_patientcollectedmedicine_set-"+id+"-sub_total").val('')
+              $("#id_patientcollectedmedicine_set-"+id+"-discount").val('')
+              $("#id_patientcollectedmedicine_set-"+id+"-sub_total").val('')
+              $("#id_patientcollectedmedicine_set-"+id+"-expiry_date").val('')
+              $("#id_patientcollectedmedicine_set-"+id+"-quantity").val('')
+            }
+            var sub = $("#id_patientcollectedmedicine_set-"+id+"-unit_price").val()
+            $("#id_patientcollectedmedicine_set-"+id+"-sub_total").val((quan*sub).toFixed(2))
+            var total = 0
+            var vat = 0
+            for (var i = 0; i < 10; i++){
+              if ($("#id_patientcollectedmedicine_set-"+i+"-sub_total").val()){
+                var pre_total = Number($("#id_patientcollectedmedicine_set-"+i+"-sub_total").val())
+                var gst1 = Number($("#id_patientcollectedmedicine_set-"+i+"-gst").val())
+                total+=pre_total
+                vat+= pre_total-[pre_total*(100/(100+gst1))]
+              }
+
+              }
+            $("#id_total_amount").val(total.toFixed(2))
+            $("#id_total_vat").val(vat.toFixed(2))
+            $("#id_net_amount").val((total-vat).toFixed(2))
+
+            }
+            }
+          })
+  }
+
+$(function () {
+    for (var i = 0; i < 10; i++){
+          $("#id_patientcollectedmedicine_set-"+i+"-item_name").autocomplete({
+          source: '{% url 'tablet_name' %}',
+          minLength: 1,
+      });
+     }
+    });
+
+$(function () {
+          $("#id_vendor_supplier").autocomplete({
+          source: '{% url 'vendor_list' %}',
+          minLength: 1,
+      });
+    });
+
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: 'btn btn-success',
+    cancelButton: 'btn btn-danger'
+  },
+  buttonsStyling: false
+})
+
+ $('.swalDefaultSuccess').click(function() {
+      var url = $(this).attr('value')
+      swalWithBootstrapButtons.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true,
+      }).then((result) => {
+        if (result.value) {
+          window.location = url;
+          swalWithBootstrapButtons.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        }
+        else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            'Cancelled',
+            'Your imaginary file is safe :)',
+            'error'
+          )
+        }
+      })
+    });
+
+
 </script>
 {% block javascript %}
 {% endblock %}
-
+{% endblock %}
 </body>
 </html>

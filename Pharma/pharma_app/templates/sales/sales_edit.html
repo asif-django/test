@@ -1,0 +1,104 @@
+{% extends 'pop_base.html' %}
+{% load static %}
+{# Load the tag library #}
+{% load bootstrap4 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+
+{% bootstrap_javascript jquery='full' %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block head %}
+<div class="col-sm-12 text-center">
+  <section class="left-sec ">
+    <button id="but1">Exchange or Return</button>
+  </section>
+  </div>
+{% endblock %}
+
+{% block content %}
+<form method="POST" id="formreset">
+            {% csrf_token %}
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="col-md-12">
+                            <div class="card border border-warning mt-2">
+                                <!-- /.card-header -->
+                                <div class="card-body p-1">
+                                <div class="row">
+                                    <div class="col-4">{% bootstrap_field patient_data_form.store set_placeholder=False %}</div>
+                                    <div class="col-4">{% bootstrap_field patient_data_form.patient set_placeholder=False %}</div>
+                                    <div class="col-4">{% bootstrap_field patient_data_form.phone set_placeholder=False %}</div>
+                                    <div class="col-4">{% bootstrap_field patient_data_form.referred_by set_placeholder=False %}</div>
+                                    <div class="col-4">{% bootstrap_field patient_data_form.payment_type set_placeholder=False %}</div>
+                                    <div class="col-4 hide">{{ patient_data_form.bill_no }}</div>
+                                </div>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card border border-info">
+                                <!-- /.card-header -->
+                                <div class="card-body table-responsive pr-2 pl-2 pb-2 pt-0" style="max-height: 250px;">
+                                {{ medicine_collect_form.management_form }}
+                                <table class="table table-striped table-head-fixed table-sm">
+                                    <thead>
+                                    <tr>
+                                        <th>S.NO</th>
+                                        <th>Item Name</th>
+                                        <th>Quantity</th>
+                                        <th>Batch ID</th>
+                                        <th>Unit Price</th>
+                                        <th>Expiry Date</th>
+                                        <th>Discount</th>
+                                        <th>GST(%)</th>
+                                        <th>Sub-Total</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for form in medicine_collect_form %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{% bootstrap_field form.item_name show_label=false set_placeholder=False %}</td>
+                                        <td>{% bootstrap_field form.quantity show_label=false set_placeholder=False %}</td>
+                                        <td>{% bootstrap_field form.batch_id show_label=false set_placeholder=False %}</td>
+                                        <td>{% bootstrap_field form.unit_price show_label=false set_placeholder=False %}</td>
+                                        <td>{% bootstrap_field form.expiry_date show_label=false set_placeholder=False %}</td>
+                                        <td>{% bootstrap_field form.discount show_label=false set_placeholder=False %}</td>
+                                        <td>{% bootstrap_field form.gst show_label=false set_placeholder=False %}</td>
+                                        <td>{% bootstrap_field form.sub_total show_label=false set_placeholder=False %}</td>
+                                        <td class="hidden">{{ form.id }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card-body border border-light p-1">
+                                <div class="row">
+                                    <div class="col-3">{% bootstrap_field patient_data_form.total_vat set_placeholder=False %}</div>
+                                    <div class="col-3">{% bootstrap_field patient_data_form.net_amount set_placeholder=False %}</div>
+                                    <div class="col-3">{% bootstrap_field patient_data_form.total_amount set_placeholder=False %}</div>
+                                    <div class="col-3"><div class="fixed-action-btn pb-4" style="text-align: center;"><br>
+                                        <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter"> Update</button>
+
+                                    </div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            </form>
+
+{% endblock %}

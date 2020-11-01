@@ -1,23 +1,31 @@
 import django_filters
-from .models import *
 from tempus_dominus.widgets import DatePicker
 
-class SaleFilter(django_filters.FilterSet):
-    From = django_filters.DateFilter(field_name="created_on", lookup_expr="gte", label='From')
-    To = django_filters.DateFilter(field_name="created_on", lookup_expr="lte", label='To')
+from .models import *
 
-    
+
+class SaleFilter(django_filters.FilterSet):
+    From = django_filters.DateFilter(field_name="sale_date", lookup_expr="gte",
+                                     label='From', widget=DatePicker())
+    To = django_filters.DateFilter(field_name="sale_date", lookup_expr="lte",
+                                   label='To', widget=DatePicker())
+
     class Meta:
-        model = Sale
+        model = PatientInfo
         fields = ['bill_no', 'phone']
-    
 
 
 class GoodsFilter(django_filters.FilterSet):
-    From = django_filters.DateFilter(field_name="created_on", lookup_expr="gte", label='From')
-    To = django_filters.DateFilter(field_name="created_on", lookup_expr="lte", label='To')
+    received_date = django_filters.DateFilter(field_name="received_date",
+                                              lookup_expr="gte",
+                                              label='Received_date',
+                                              widget=DatePicker())
+    invoice_date = django_filters.DateFilter(field_name="invoice_date",
+                                             lookup_expr="lte",
+                                             label='Invoice_date',
+                                             widget=DatePicker())
 
     class Meta:
-        model = Goods
-        fields = ['vendor_supplier', 'invoice_no', 'received_store', 'grn_type']
-        
+        model = VendorInfo
+        fields = ['vendor_supplier', 'invoice_no', 'received_store',
+                  'received_date', 'invoice_date']

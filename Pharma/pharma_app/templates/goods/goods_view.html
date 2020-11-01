@@ -10,88 +10,135 @@
 
 {# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
+{% load widget_tweaks %}
 
 
 {% block head %}
-<div class="col-sm-6">
-  <h1 class="m-0 text-dark">Goods</h1>
-</div>
-<div class="col-sm-6">
-  <ol class="breadcrumb float-sm-right">
-    <li class="breadcrumb-item"><a href="{% url 'goods_create' %}"><button class = "btn waves-effect btn-warning btn-md " >Create</button></a></li>
-  </ol>
-</div>
+  <div class="col-sm-6">
+    <section class="left-sec">
+      <h3> Goods Receive</h3>
+    </section>
+  </div>
+  <div class="col-sm-6">
+    <ol class="breadcrumb float-sm-right">
+      <li class="breadcrumb-item"><a href="{% url 'goods_create' %}"><button class = "btn waves-effect btn-warning btn-md " >Create</button></a></li>
+    </ol>
+  </div>
 {% endblock %}
 
 {% block content %}
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-body">
-        <div class="row p-1">
-          <div class="card">
-            <div class="card-body">
-              <div class="row">
-                <form method="GET">
-                  {{ myfilter.form }}
-                  <button type="submit" class="btn btn-success"> Search </button>
-                </form>
-              </div>
-            </div>
-          </div> 
+<div id="blur"></div>
+  <div class="row">
+
+    <div class="col-md-12">
+      <div class="card card-outline card-warning">
+        <div class="card-header">
+          <card-titel>Search...</card-titel>
         </div>
-
+        <div class="card-body pt-0 pb-0">
+          <form method="GET">
+            <div class="row">
+              <div class="form-group  col-md-2">
+                {{ myfilter.form.vendor_supplier.label_tag }}
+                {% render_field myfilter.form.vendor_supplier class="form-control" %}
+              </div>
+              <div class="form-group  col-md-2">
+                {{ myfilter.form.invoice_no.label_tag }}
+                {% render_field myfilter.form.invoice_no class="form-control" %}
+              </div>
+              <div class="form-group  col-md-2">
+                {{ myfilter.form.received_date.label_tag }}
+                {% render_field myfilter.form.received_date class="form-control" %}
+              </div>
+              <div class="form-group  col-md-2">
+                {{ myfilter.form.invoice_date.label_tag }}
+                {% render_field myfilter.form.invoice_date class="form-control" %}
+              </div>
+              <div class="col-md-2 p-4">
+                <button type="submit" class="btn btn-primary">
+                  <span class="glyphicon glyphicon-search"></span> Search
+                </button>
+            </div>
+            </div>
+          </form>
+        </div>
       </div>
-
     </div>
 
-  </div>
-  <div class="col-md-12">
-      <div class="card">
-          <!-- /.card-header -->
-          <div class="card-body table-responsive p-1 myfontsize">
-            <table class="table table-bordered table-md table-head-fixed">
-              <thead>
-                <tr>
-                  <th>S.NO</th>
-                  <th>Manufacture Name</th>
-                  <th>GRN_Type</th>
-                  <th>Received Store</th>
-                  <th>Invoice No</th>
-                  <th>Received Date</th>
-                  <th>Received By</th>
-                  <th>Invoice Date</th>
-                  <th>Invoice Amount</th>
-                  <th>GST Amount</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-              {% for form in goods_form %}
-                <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td>{{ form.vendor_supplier }}</td>
-                  <td>{{ form.grn_type }}</td>
-                  <td>{{ form.received_store }}</td>
-                  <td>{{ form.invoice_no }}</td>
-                  <td>{{ form.received_date }}</td>
-                  <td>{{ form.received_by }}</td>
-                  <td>{{ form.invoice_date }}</td>
-                  <td>{{ form.invoice_amount }}</td>
-                  <td>{{ form.gst_amount }}</td>
-                  <td><button OnClick="showSales(this)" value="{% url 'goods_itme_view' form.id %}" class = "btn btn-block btn-primary btn-sm" >View</button></td>
-                </tr>
-              {% endfor %}
-              </tbody>
-            </table>
+    <div class="col-md-12">
+        <div class="card">
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-3 myfontsize">
+              <table class="table table-bordered table-md text-center" id="myTable">
+                {% include 'paginator.html' with page_obj=goods_form %}
+                <thead>
+                  <tr>
+                    <th>S.NO</th>
+                    <th>Manufacture Name</th>
+                    <th>GRN_Type</th>
+                    <th>Received Store</th>
+                    <th>Invoice No</th>
+                    <th>Received Date</th>
+                    <th>Received By</th>
+                    <th>Invoice Date</th>
+                    <th>Invoice Amount</th>
+                    <th>GST Amount</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody class="myfontsize">
+                {% for form in goods_form %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ form.vendor_supplier }}</td>
+                    <td>{{ form.grn_type }}</td>
+                    <td>{{ form.received_store }}</td>
+                    <td>{{ form.invoice_no }}</td>
+                    <td>{{ form.received_date }}</td>
+                    <td>{{ form.received_by }}</td>
+                    <td>{{ form.invoice_date }}</td>
+                    <td>{{ form.invoice_amount }}</td>
+                    <td>{{ form.gst_amount }}</td>
+                    <td>
+                      <a OnClick="showSales(this)" value="{% url 'goods_item_view' form.id %}" class = "btn btn-primary" >View</a>
+                      <a value="{% url 'goods_delete' form.id %}" class = "btn btn-danger swalDefaultSuccess" >Delete</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
           </div>
-          <!-- /.card-body -->
-        </div>
-  </div>
-    <!-- /.col-md-6 -->
+    </div>
     <div class="col-md-7 hide" id="showSalesView">
-      
-  </div>
-</div>
+    </div>
+  </div>  
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+  function showExchangeReturn(x){
+    var id = $(x).attr('value')
+    newwindow=window.open(id,'','height=550,width=1200,left=250, top=200, location=0, toolbar=no');
+    if (window.focus) {newwindow.focus()}
+    return false;
+  }
+
+  $(function () {
+          $("#id_vendor_supplier").autocomplete({
+          source: '{% url 'vendor_list' %}',
+          minLength: 1,
+      });
+    });
+
+  $(function () {
+          $("#id_invoice_no").autocomplete({
+          source: '{% url 'invoice_list' %}',
+          minLength: 1,
+      });
+    });
+</script>
 
 {% endblock %}
