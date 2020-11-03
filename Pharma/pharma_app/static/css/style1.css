@@ -43,8 +43,10 @@ main{
     justify-content: space-between;
     align-items: center;
 
-
 }
+
+
+
 main .left-sec{
     padding-left: 100px;
 }
@@ -103,6 +105,6 @@ main .left-sec{
 .right-sec img{
     width: 600px;
     height: 500px;
-    margin-top: 80px;
+    margin-top: 90px;
     margin-right: 40px;
 }

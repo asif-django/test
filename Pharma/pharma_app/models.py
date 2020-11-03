@@ -124,7 +124,6 @@ class VendorInfo(models.Model):
     '''
     here we are collecting vendor_supplier info
     '''
-    objects = None
     grn_type = models.CharField(max_length=50, null=True, blank=True,
                                 default="Purchase Received", verbose_name="GRN_Type")
     received_store = models.CharField(max_length=50, null=True, blank=True,
@@ -152,7 +151,7 @@ class VendorInfo(models.Model):
     round_off = models.IntegerField(null=True, blank=True,
                                     verbose_name="Round Off")
 
-    status = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
@@ -165,16 +164,14 @@ class Medicine(models.Model):
     here we collecting that particular vendor supplied medicine
     with expiry date, price, gst and quantity
     """
-    DoesNotExist = None
-    objects = None
     vendor_supplier = models.ForeignKey(VendorInfo, on_delete=models.CASCADE)
     item_name = models.CharField(max_length=50, null=True, blank=True,
                                  verbose_name="Item Name")
-    quantity = models.IntegerField(null=True, blank=True,
+    quantity = models.IntegerField(default=0, blank=True,
                                    verbose_name="Quantity")
-    sale_quantity = models.IntegerField(null=True, blank=True,
+    sale_quantity = models.IntegerField(default=0, blank=True,
                                         verbose_name="Sale Quantity")
-    free_quantity = models.IntegerField(null=True, blank=True,
+    free_quantity = models.IntegerField(default=0, blank=True,
                                         verbose_name="Free Quantity")
     batch_id = models.CharField(max_length=50, null=True, blank=True,
                                 verbose_name="Batch ID")
@@ -189,7 +186,7 @@ class Medicine(models.Model):
     sub_total = models.FloatField(null=True, blank=True,
                                   verbose_name="Sub Total")
 
-    status = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True,)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
@@ -225,7 +222,7 @@ class PatientInfo(models.Model):
                                      verbose_name="Total_Amountt")
     sale_date = models.DateField(auto_now_add=True, null=True)
 
-    status = models.BooleanField(default=True,)
+    is_active = models.BooleanField(default=True,)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
@@ -256,7 +253,7 @@ class PatientCollectedMedicine(models.Model):
     sub_total = models.FloatField(null=True, blank=True,
                                   verbose_name="Sub Total")
 
-    status = models.BooleanField(default=True,)
+    is_active = models.BooleanField(default=True,)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 

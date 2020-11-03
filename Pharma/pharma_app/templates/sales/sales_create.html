@@ -10,10 +10,10 @@
 {% endblock %}
  
 {% block content %}
+<div id="blur1"></div>
 <form method="POST" id="formreset">
 {% csrf_token %}
 <div class="row justify-content-center">
-    
     <div class="col-md-8 pt-2" style="background-color: #1f2d3d40;"> 
         <div class="card ">
             <div class="col-md-12">
@@ -132,13 +132,16 @@ $(document).keydown(function(e) {
 });
   function FormReset(){
     $("#formreset")[0].reset()
-  }
-
+  };
+function PopItUp(){
+    document.getElementById("blur1").style.display = "block";
+};
   $('#myclose').click(function(){
     $('#printpopup').removeClass('show').addClass('hide')
     })
 
   $(document).ready(function(){
+    document.getElementById("blur1").style.display = "none";
     var id = "{{ url }}"
     if (id){
     new_window=window.open(id,'','height=550,width=900,left=400, top=200, location=0, toolbar=no');

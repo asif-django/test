@@ -39,6 +39,37 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="{% static 'plugins/jquery/jQuery.print.js' %}"></script> -->
 
   <style type="text/css">
+  #wait {
+      position: absolute;
+      top: 49%;
+      right: 54%;
+      z-index:99;
+      }
+   .loader {
+      position: absolute;
+      top: 40%;
+      right: 50%;
+      z-index:9999;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid blue;
+      border-right: 16px solid green;
+      border-bottom: 16px solid red;
+      width: 150px;
+      height: 150px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     
     .hide{
       display: none;
@@ -110,7 +141,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
       top: 30px;
       z-index: 9999;
     }
-
+#blur {
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.7); /* Black background with opacity */
+    z-index: 99; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+    }
 
   </style>
 </head>
@@ -133,6 +176,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
+        <div class="loader-loader">
+          <div class="loader"></div>
+          <div id="wait"><h3>Wait...</h3></div>
+        </div>
+        <div id="blur"></div>
           {% block content %}
           <br>
             
@@ -169,6 +217,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE App -->
 <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
 <script>
+document.getElementById("blur").style.display = "block";
+ $(window).on("load",function(){
+    $(".loader-loader").fadeOut("slow");
+    document.getElementById("blur").style.display = "none";
+  });
   $("select#id_store.form-control option[value='']").html('Store');
   $("select#id_payment_type.form-control option[value='']").html('Payment Type');
   for (var i = 0; i < 15; i++){

@@ -12,12 +12,21 @@
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row">
-              {% for field in profile_form %}
               <div class="col-md-6">
-                {% bootstrap_field field show_label=True show_help=True %}
+                {% bootstrap_field profile_form.user_name show_label=True %}
+                {% bootstrap_field profile_form.email show_label=True %}
               </div>
-              {% endfor %}
+              <div class="col-md-6">
+                {% bootstrap_field profile_form.photo show_label=True %}
+              </div>
+              <div class="col-md-6">
+                {% bootstrap_field profile_form.date_of_birth show_label=True %}
+              </div>
+              <div class="col-md-6">
+                {% bootstrap_field profile_form.mobile show_label=True %}
+              </div>
             </div>
+            <br>
             <div class="row justify-content-center">
               <div class="col-5">
                 <button type="submit" class="btn btn-primary btn-block">update profile</button>

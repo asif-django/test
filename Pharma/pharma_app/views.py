@@ -1,4 +1,5 @@
 import datetime
+from itertools import chain
 
 from django.conf import settings
 from django.contrib import messages
@@ -13,7 +14,7 @@ from django.forms.models import inlineformset_factory
 from django.http import JsonResponse
 from django.shortcuts import reverse, render, redirect, HttpResponseRedirect, \
     HttpResponse, get_object_or_404
-from itertools import chain
+
 from .filters import *
 from .forms import *
 from .models import *
@@ -74,7 +75,7 @@ def user_profile(request):
         form = ProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
-            return redirect(reverse('home',))
+            return redirect(reverse('home', ))
         else:
             error = form.errors()
             print(error)
@@ -99,7 +100,7 @@ def user_logout(request):
         logout(request)
         return render(request, 'registration/login.html', context)
     logout(request)
-    return redirect(reverse('user_login',))
+    return redirect(reverse('user_login', ))
 
 
 @login_required(login_url='/user-login/')
@@ -137,7 +138,8 @@ def forgot_password(request):
             send_mail('XYZ:Forgot password recovery', url,
                       settings.EMAIL_HOST_USER,
                       [str(user[0].email)], fail_silently=False)
-            messages.success(request, 'Check your Email for Password recover', extra_tags="green")
+            messages.success(request, 'Check your Email for Password recover',
+                             extra_tags="green")
         messages.error(request, 'Your email is no correct', extra_tags="red")
         return render(request, 'registration/forgot-password.html')
     return render(request, 'registration/forgot-password.html')
@@ -176,7 +178,7 @@ def view_goods(request):
     :param request:
     :return: goods view page
     """
-    form = VendorInfo.objects.all()
+    form = VendorInfo.objects.all().order_by("-id")
     my_filter = GoodsFilter(request.GET, queryset=form)
     form = my_filter.qs
     paginator = Paginator(form, 15)
@@ -239,7 +241,8 @@ def create_goods(request):
                     except IntegrityError:
                         pass
                     f.vendor_supplier = v_i_f
-                    f.sale_quantity = int(f.quantity)+int(f.free_quantity)
+                    f.is_active=True
+                    f.sale_quantity = int(f.quantity) + int(f.free_quantity)
                     v_i_f.save()
                     f.save()
             messages.success(request, 'Data added successfully',
@@ -287,8 +290,17 @@ def edit_goods(request, goods_id):
             for form in u_m_f:
                 if form.item_name:
                     form.vendor_supplier = u_v_f
+                    sale_quan = Medicine.objects.filter(id=form.id)
+                    total_free_and_purched = int(form.quantity) + int(form.free_quantity)
+                    sold_quan = ((sale_quan[0].quantity)+(sale_quan[0].free_quantity))-(sale_quan[0].sale_quantity)
+                    form.sale_quantity = total_free_and_purched - sold_quan
                     u_v_f.save()
                     form.save()
+                    if form.sale_quantity > 0:
+                        form.is_active = True
+                        form.save()
+                    else:
+                        form.is_active = False
 
             messages.success(request,
                              'Your are Data Updated Successfully',
@@ -408,7 +420,7 @@ def create_sale(request):
             sf = sale_form.save(commit=False)
             sf.save()
             if sf.bill_no is None and sf.id:
-                sf.bill_no = "DSRBIL" + str(sf.id)
+                sf.bill_no = "RENUBILL" + str(sf.id)
                 sf.save()
             mf = sale_item_form.save(commit=False)
             for f in mf:
@@ -424,8 +436,12 @@ def create_sale(request):
                         0].sale_quantity
                     # that particular field value.
                     update_quantity = available_quantity - int(fq)
-                    data.update(
-                        sale_quantity=update_quantity)
+                    if update_quantity == 0:
+                        data.update(
+                            sale_quantity=update_quantity, is_active=False)
+                    else:
+                        data.update(
+                            sale_quantity=update_quantity)
                     # update that particular field with new value
                     f.patient_name = sf
                     f.save()
@@ -489,22 +505,27 @@ def edit_sale(request, patient_id):
                         update_with = int(patient_available_quantity) - int(
                             f.quantity)
                         update_quantity = medicine_quantity + update_with
-                        medicine_update.update(
-                            sale_quantity=update_quantity)
+                        if not medicine_update[0].is_active:
+                            medicine_update.update(
+                                sale_quantity=update_quantity, is_active=True)
+                        else:
+                            medicine_update.update(
+                                sale_quantity=update_quantity,)
                         # update that particular field with new value
                         f.patient_name = patient_from
                         patient_from.save()
                         f.save()
                     elif int(f.quantity) > int(patient_available_quantity):
-                        update_with = int(f.quantity) - int(
-                            patient_available_quantity)
-                        update_quantity = medicine_quantity - update_with
-                        medicine_update.update(
-                            sale_quantity=update_quantity)
-                        # update that particular field with new value
-                        f.patient_name = patient_from
-                        patient_from.save()
-                        f.save()
+                        pass
+                        # update_with = int(f.quantity) - int(
+                        #     patient_available_quantity)
+                        # update_quantity = medicine_quantity - update_with
+                        # medicine_update.update(
+                        #     sale_quantity=update_quantity)
+                        # # update that particular field with new value
+                        # f.patient_name = patient_from
+                        # patient_from.save()
+                        # f.save()
                     else:
                         f.patient_name = patient_from
                         patient_from.save()
@@ -532,7 +553,7 @@ def edit_sale(request, patient_id):
                                               0].sale_quantity + int(
                             data.quantity)
                         medicine_update.update(
-                            sale_quantity=update_quantity)
+                            sale_quantity=update_quantity, is_active=True)
                         data.delete()
             messages.success(request,
                              'Your are Data Updated Successfully',
@@ -583,7 +604,9 @@ def fill_data(request):
     :param value: tablate name
     :return: return in json format
     """
-    data = Medicine.objects.filter(item_name__iexact=request.GET['value'])
+    data = Medicine.objects.filter(item_name__iexact=request.GET['value'],
+                                   is_active=True).latest("-expiry_date")
+    data = Medicine.objects.filter(id=data.id)
     xyz = PatientCollectedMedicine.objects.filter(id=request.GET['user_id'])
     combined = list(chain(data, xyz))
     v = serializers.serialize('json', combined)
@@ -617,7 +640,7 @@ def tablet_name(request):
     """
     if 'term' in request.GET:
         qs = MedicineName.objects.filter(
-            medicines__istartswith=request.GET.get('term'),
+            medicines__istartswith=request.GET.get('term')
         )[:3]
         titles = list()
         for product in qs:
@@ -651,7 +674,8 @@ def invoice_list(request):
     :return:
     """
     if "term" in request.GET:
-        qs = VendorInfo.objects.filter(invoice_no__istartswith=request.GET.get('term'),)[:3]
+        qs = VendorInfo.objects.filter(
+            invoice_no__istartswith=request.GET.get('term'), )[:3]
         vendor_name = list()
         for product in qs:
             vendor_name.append(product.invoice_no)
@@ -666,7 +690,8 @@ def bill_no(request):
     :return:
     """
     if "term" in request.GET:
-        qs = PatientInfo.objects.filter(bill_no__istartswith=request.GET.get('term'),)[:3]
+        qs = PatientInfo.objects.filter(
+            bill_no__istartswith=request.GET.get('term'), )[:3]
         vendor_name = list()
         for product in qs:
             vendor_name.append(product.bill_no)
@@ -681,7 +706,8 @@ def patient_phone(request):
     :return:
     """
     if "term" in request.GET:
-        qs = PatientInfo.objects.filter(phone__istartswith=request.GET.get('term'),)[:3]
+        qs = PatientInfo.objects.filter(
+            phone__istartswith=request.GET.get('term'), )[:3]
         vendor_name = list()
         for product in qs:
             vendor_name.append(product.phone)

@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.forms import ModelForm, forms
+from django.forms import ModelForm
 from tempus_dominus.widgets import DatePicker
 
 from .models import *
@@ -42,6 +42,16 @@ class MedicineForm(ModelForm):
             {"onchange": "getMedTotal(this)"})
         self.fields['quantity'].widget.attrs.update(
             {"onchange": "getMedTotal(this)"})
+
+    def clean_is_active(self):
+        is_active = self.cleaned_data.get('is_active')
+        data = Medicine.objects.filter(
+            sale_quantity=self.cleaned_data.get('is_active')).count()
+        print("###3#######" * 20)
+        print(data)
+        if not is_active and data is None:
+            is_active = True
+        return is_active
 
 
 class PatientInfoForm(ModelForm):

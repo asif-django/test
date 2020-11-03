@@ -42,47 +42,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="{% static 'plugins/jquery/jQuery.print.js' %}"></script> -->
 
   <style type="text/css">
-   /* #showSalesView{
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #6c757d;
-      border: 0 none;
-      border-radius: 10px;
-      max-height: 400px;
-      overflow-x: hidden;
-      box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
-      padding: 10px;
-      box-sizing: border-box;
-      width: 94%;
-      margin: 0 3% 20px 3%;
-      text-align: center;
-      color: black;
-      z-index: 9999;
-    
-    } */
 
-    /* #showPrintPage{
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #6c757d;
-      border: 0 none;
-      border-radius: 10px;
-      max-height: 400px;
-      overflow-x: hidden;
-      box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
-      padding: 10px;
-      box-sizing: border-box;
-      width: 94%;
-      margin: 0 3% 20px 3%;
-      text-align: center;
-      color: black;
-      z-index: 9999;
+  #wait {
+      position: absolute;
+      top: 47%;
+      right: 52%;
+      z-index:99;
+      }
+   .loader {
+      position: absolute;
+      top: 40%;
+      right: 50%;
+      z-index:9999;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid blue;
+      border-right: 16px solid green;
+      border-bottom: 16px solid red;
+      width: 150px;
+      height: 150px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
 
-    } */
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
     .print-popup{
       position: fixed !important;
@@ -170,7 +161,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     .bored_bottom{
       border-bottom: 1px solid black;
     }
-    #blur {
+    #blur, #blur1 {
     position: fixed; /* Sit on top of the page content */
     display: none; /* Hidden by default */
     width: 100%; /* Full width (cover the whole page) */
@@ -179,7 +170,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    background-color: rgba(0,0,0,0.7); /* Black background with opacity */
     z-index: 99; /* Specify a stack order in case you're using a different order for other elements */
     cursor: pointer; /* Add a pointer on hover */
     }
@@ -204,6 +195,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   td a{
   color: White !important;
   text-decoration: none;
+  }
+
+  .photostyle{
+  width:150px;
+  height:150px;
   }
 
   </style>
@@ -349,10 +345,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
+        <div class="loader-loader">
+          <div class="loader"></div>
+          <div id="wait"><h3>Wait...</h3></div>
+        </div>
+        <div id="blur"></div>
           {% block content %}
-          <main>
+         <main>
             <section class="left-sec">
-              <h2>We are here for your care</h2>  
+              <h2>We are here for your care</h2>
               <h1>We are the best doctor</h1>
               <p>we are here for your care 24/7 any help just call us.</p>
               <button>More Details</button>
@@ -364,6 +365,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </section>
 
           </main>
+
             
           {% endblock %}
           <!-- Button trigger modal -->
@@ -423,6 +425,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
 <script src="{% static 'plugins/inputmask/min/jquery.inputmask.bundle.min.js' %}"></script>
 <script>
+
   $("select#id_grn_type.form-control option[value='']").html('GRN Type');
   $("select#id_grn_type option[value='']").html('Select GRN Type');
   $("select#id_received_store.form-control option[value='']").html('Received Store');
@@ -442,12 +445,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
   //   "data-toggle":"datetimepicker",
   //   "data-target":"#id_To"
   // })
-
+  document.getElementById("blur").style.display = "block";
+$(window).on("load",function(){
+    $(".loader-loader").fadeOut("slow");
+    document.getElementById("blur").style.display = "none";
+  });
 
 
 function showSales(x){
-    var id = $(x).attr('value')
     document.getElementById("blur").style.display = "block";
+    var id = $(x).attr('value')
     console.log(id)
     $.ajax(
       {
@@ -459,7 +466,6 @@ function showSales(x){
           $('#close').click(function(){
           document.getElementById("blur").style.display = "none";
           $('#showSalesView').removeClass('show').addClass('hide')
-
           })
         }
         else{
@@ -482,7 +488,6 @@ function showSales(x){
         var id = $(e).attr("id")
         var item_name = $(e).val()
         console.log(item_name)
-        console.log(id)
         var patt1 = /\d+/g;
         var result = id.match(patt1)
         var url = "/fill_data/"
@@ -491,6 +496,7 @@ function showSales(x){
         data:{ "value":item_name, "user_id":0},
         type: 'GET',
         success: function (data) {
+            console.log(data)
             if (data[0]){var quantity = data[0]["fields"]["sale_quantity"]}else{var quantity = 0 }
             if (quantity <= 0){
                 var msg = (item_name+ "&nbsp <spam class='text-danger'>is out of stock<spam>")
@@ -617,7 +623,7 @@ function showSales(x){
             }
             }
           })
-  }
+  };
 
 $(function () {
     for (var i = 0; i < 10; i++){

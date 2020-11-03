@@ -22,7 +22,7 @@ class MedicineAdmin(admin.ModelAdmin):
     list_display = ('id',
     'vendor_supplier', 'item_name', 'quantity', 'sale_quantity',
     'free_quantity', 'batch_id', 'expiry_date', 'sale_price', 'cost_price',
-    'gst', 'sub_total','status','created_on')
+    'gst', 'sub_total','is_active','created_on')
 
 
 admin.site.register(Medicine, MedicineAdmin)
@@ -31,7 +31,7 @@ admin.site.register(Medicine, MedicineAdmin)
 class PatientInfoAdmin(admin.ModelAdmin):
     list_display = ('id',
     'store', 'bill_no', 'patient', 'referred_by', 'payment_type',
-    'total_amount', 'total_vat', 'net_amount','status')
+    'total_amount', 'total_vat', 'net_amount','is_active')
 
 
 admin.site.register(PatientInfo, PatientInfoAdmin)
@@ -40,7 +40,7 @@ admin.site.register(PatientInfo, PatientInfoAdmin)
 class PatientCollectedMedicineAdmin(admin.ModelAdmin):
     list_display = ('id',
     'patient_name', 'item_name', 'quantity', 'batch_id', 'unit_price',
-    'discount', 'gst', 'sub_total','status')
+    'discount', 'gst', 'sub_total','is_active')
 
 
 admin.site.register(PatientCollectedMedicine, PatientCollectedMedicineAdmin)
