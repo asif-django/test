@@ -94,4 +94,8 @@ class ProfileForm(ModelForm):
         widgets = {
             'date_of_birth': DatePicker(),
         }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['mobile'].widget.attrs.update(
+            {'data-inputmask': '"mask": "999-999-9999"'})
 
